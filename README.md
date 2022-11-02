@@ -37,4 +37,4 @@
 </HTML>
 
 ## Examples
-- `get_simple_source_list.py -f xyz.fits -t 6.5`
+- `python get_simple_source_list.py -f xyz.fits -t 6.5`
