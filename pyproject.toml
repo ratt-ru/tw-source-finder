@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "tw-source-finder"
+version = "0.0.1"
+license = "MIT license"
+readme = 'README.md'
+description = "super-fast source finder routine using polygon based approach"
+authors = ["Tony Willis <tony.willis.research@gmail.com>"]
+maintainers = [
+    "Tony Willis <tony.willis.research@gmail.com>",
+    "Samuel Twum <samueltwum1@gmail.com>",
+    "Buntu Ngcebetsha <bngcebetsha@sarao.ac.za>",
+]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+]
+packages = [
+    { include = "tw_source_finder", from = "src" }
+]
+include = [
+    { path = 'tests'},
+]
+
+[tool.poetry.scripts]
+tw-source-list = 'tw_source_finder.scripts.get_simple_source_list:main'
+
+[tool.poetry.dependencies]
+python = "^3.8"
+astropy = "^5.1"
+scikit-image = "^0.19.3"
+shapely = "^1.8.5.post1"
+reproject = "^0.9.1"
+
+[build-system]
+requires = ["poetry-core>=1.2.0"]
+build-backend = "poetry.core.masonry.api"
