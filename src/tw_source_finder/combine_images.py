@@ -1,17 +1,18 @@
-#!/usr/bin/env python
-
-# a script to subtract specified areas from a radio_cutout field
-from astropy.io import fits
-from check_array import check_array, update_dimensions
-from process_polygon_data import *
-from skimage.draw import polygon as skimage_polygon
-from conv_image import convolve_image
-
+"""
+a script to subtract specified areas from a radio_cutout field
+"""
 import os
 import numpy as np
 import math
 import sys
 import shutil
+
+from astropy.io import fits
+from skimage.draw import polygon as skimage_polygon
+
+from tw_source_finder.check_array import check_array, update_dimensions
+from tw_source_finder.process_polygon_data import *
+from tw_source_finder.conv_image import convolve_image
 
 
 def make_simulated_noise(fits_file,std_dev):

@@ -1,16 +1,17 @@
-#!/usr/bin/env python
-
 # script to generate dilated images
+
 import os
 import os.path
 import sys
 import numpy
 import math
 import timeit
+
 from astropy.coordinates import SkyCoord
-from read_input_table import process_input_file
-from make_morphology_mask import make_mask
 from optparse import OptionParser
+
+from tw_source_finder.read_input_table import process_input_file
+from tw_source_finder.make_morphology_mask import make_mask
 
 def process_images(filename, filter_size, filter_type, offset_flux, use_conv, double_erode, do_batch):
         print('processing file ', filename)
@@ -83,4 +84,3 @@ def main( argv ):
 # 
 if __name__ == "__main__":
   main(sys.argv)
-

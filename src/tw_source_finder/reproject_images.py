@@ -1,18 +1,21 @@
-#!/usr/bin/env python
+"""
+a script to align radio and optical fields 
+and, then write out final aligned radio field for further processing
+"""
 
-# a script to align radio and optical fields 
-# and, then write out final aligned radio field for further processing
+import sys
+import os
+
+import astropy.units as u
+import numpy as np
+import astropy.visualization as vis
+import matplotlib.pyplot as plt
 
 from astropy.io import fits
 from astropy.wcs import WCS
-from reproject import reproject_interp
-import astropy.visualization as vis
-import matplotlib.pyplot as plt
 from astropy.coordinates import SkyCoord
-import astropy.units as u
-import numpy as np
-import sys
-import os
+from reproject import reproject_interp
+
 
 def align_fields(radio, optical, show_plot, out_png):
   hdu1 = fits.open(optical)[0]
@@ -117,4 +120,3 @@ def main( argv ):
 
 if __name__ == '__main__':
     main(sys.argv)
-

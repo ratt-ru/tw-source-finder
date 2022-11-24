@@ -1,23 +1,26 @@
-#!/usr/bin/env python
-
-# This program convolves/smooths an image from a high resolution to a lower
-# resolution. This program works similar to a radio astronomy program where
-# we do convolution by cutting out the higher frequency components of the
-# UV plane, so point soutces appear broader but retain the same 'peak' 
-# response. It uses the astropy convolution module
+"""
+This program convolves/smooths an image from a high resolution to a lower
+resolution. This program works similar to a radio astronomy program where
+we do convolution by cutting out the higher frequency components of the UV
+plane, so point soutces appear broader but retain the same 'peak' response.
+It uses the astropy convolution module
+"""
 
 import math
 import sys
+import timeit
 import numpy as np
 import matplotlib.pyplot as plt
+
 from datetime import date
+
 from astropy.wcs import WCS
 from astropy.io import fits
 from astropy.convolution import convolve, convolve_fft,Gaussian2DKernel, Tophat2DKernel
 from astropy.modeling.models import Gaussian2D
 import astropy.visualization as vis
-from check_array import check_array, update_dimensions
-import timeit
+
+from tw_source_finder.check_array import check_array, update_dimensions
 
 
 def convolve_image(fits_input_image, conv_factor, use_fft='F', do_downsize = 'F'):

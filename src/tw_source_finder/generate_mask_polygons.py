@@ -1,8 +1,8 @@
-#!/usr/bin/env python
-
-# A script that examines an image and generates polygons (== contours) at 
-# locations where the signal in the image is above a specified level.
-# It outputs the contours for analysis in later acripts
+"""
+A script that examines an image and generates polygons (== contours) at 
+locations where the signal in the image is above a specified level.
+It outputs the contours for analysis in later acripts
+"""
 
 import sys
 import os
@@ -12,12 +12,15 @@ import subprocess
 import numpy as np
 import matplotlib.pylab as plt
 import matplotlib.cm as cm
+
 import astropy.visualization as vis
+
 from astropy.utils.data import get_pkg_data_filename
 from shapely.geometry import Polygon, Point
 from astropy.io import fits
 from astropy.wcs import WCS
-from check_array import check_array
+
+from tw_source_finder.check_array import check_array
 
 class make_polygon:
   def __init__(self,hdu,mask,morph_signal, file_name):

@@ -1,28 +1,33 @@
-#!/usr/bin/env python
+"""
+Script to generate polygons from contours and then use
+polygons to get source positions and flux densities
+"""
 
-# scripe to generate polygons from contours and then use polygons
-# to get source positions and flux densities
-
+# system imports
 import sys
 import numpy as np
 import math 
 import timeit
-from coords import rad_to_hms, rad_to_dms
+
+# third party imports
 from astropy.coordinates import Angle
 from astropy import units as u
 from astropy.io import fits
 from optparse import OptionParser
-from check_array import check_array
 from astropy.wcs import WCS
 from astropy import wcs
-from breizorro_extract import make_noise_map
-from beam_to_pixels import calculate_area
 from skimage import measure
 from skimage.draw import polygon as skimage_polygon
 from shapely.geometry import Polygon
-from process_polygon_data import maxDist, simple_distance
 from operator import itemgetter, attrgetter
 from multiprocessing import Process, Queue
+
+# package module imports
+from tw_source_finder.coords import rad_to_hms, rad_to_dms
+from tw_source_finder.check_array import check_array
+from tw_source_finder.breizorro_extract import make_noise_map
+from tw_source_finder.beam_to_pixels import calculate_area
+from tw_source_finder.process_polygon_data import maxDist, simple_distance
 
 # 'boiler plate' function for handling Queue-based 
 # parallel processing

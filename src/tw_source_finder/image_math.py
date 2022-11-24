@@ -1,15 +1,15 @@
-#!/usr/bin/env python
-
 # a script to subtract specified areas from a radio_cutout field
-from astropy.io import fits
-from check_array import check_array
-from process_polygon_data import *
 
 import os.path
 import numpy as np
 import math
-from optparse import OptionParser
 import sys
+
+from optparse import OptionParser
+from astropy.io import fits
+
+from tw_source_finder.check_array import check_array
+from tw_source_finder.process_polygon_data import *
 
 
 def analyze_image(filename, second_file,  use_math):

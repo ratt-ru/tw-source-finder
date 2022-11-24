@@ -1,10 +1,11 @@
-#!/usr/bin/env python
+"""
+a simple script to insert aperture synthesis beam 
+parameters into a fits image which does not have them.
+"""
 
-# a simple script to insert aperture synthesis beam parameters into a fits image
-# which does not have them.
+import sys
 
 from astropy.io import fits
-import sys
 
 def insert_beam_parameters(argv):
 # Load the image for which beam parameters ar to be inserted
@@ -29,4 +30,3 @@ def main( argv ):
 
 if __name__ == '__main__':
     main(sys.argv)
-

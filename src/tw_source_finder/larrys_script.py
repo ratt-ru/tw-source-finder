@@ -1,33 +1,27 @@
-#!/usr/bin/env python
+"""
+Multi-resolution filtering of radio images
+technique described in Rudnick, 2002 https://iopscience.iop.org/article/10.1086/342499/pdf
+larry@umn.edu -- please contact for assistance, as needed
+code below courtesy of Viral Parekh, SARAO , vparekh@ska.ac.za
 
-# Multi-resolution filtering of radio images
-#    technique described in Rudnick, 2002 https://iopscience.iop.org/article/10.1086/342499/pdf
-#	larry@umn.edu -- please contact for assistance, as needed
-#    code below courtesy of Viral Parekh, SARAO , vparekh@ska.ac.za
-#
-# technique creates a diffuse emission map, called “open”; 
-#      for small scale features,  filtered = original_map - open
+technique creates a diffuse emission map, called “open”; 
+for small scale features,  filtered = original_map - open
 
-#
+ * pick a box size 3x the beam-size or 3x size of features you want to remove 
+ * open map has an offset zero level - determine it and correct
+ * open map is at original resolution - units are the same in Jy/beam
+ * open map will show sharp edges to diffuse regions, but is boxy; convolve for aesthetics 
+"""
 
-#  pick a box size 3x the beam-size or 3x size of features you want to remove 
-
-#  open map has an offset zero level - determine it and correct
-
-#  open map is at original resolution - units are the same in Jy/beam
-
-#  open map will show sharp edges to diffuse regions, but is boxy; convolve for aesthetics 
-
-#
-
+import sys
 import numpy as np
+
 from astropy.io import fits
 from scipy.ndimage.filters import minimum_filter as minf2D
 from scipy.ndimage.filters import maximum_filter as maxf2D
 from skimage.morphology import erosion, dilation
-from skimage.morphology import  rectangle
+from skimage.morphology import rectangle
 
-import sys
 
 # copied from breizorro
 def check_array(data):

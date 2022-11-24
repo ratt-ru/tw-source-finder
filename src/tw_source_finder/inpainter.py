@@ -1,19 +1,22 @@
-#!/usr/bin/env python
-
-# script to use inpainting to fill in holes of FITS images
-# FITS images
+"""
+script to use inpainting to fill in holes of FITS images
+"""
 
 # import the necessary packages
 import pyheal
-from astropy.io import fits
 import numpy as np
 import sys
 import timeit
-from check_array import check_array, update_dimensions
 import astropy.visualization as vis
-from read_input_table import  process_input_file
 import matplotlib.pyplot as plt
+
+from astropy.io import fits
 from optparse import OptionParser
+
+from tw_source_finder.check_array import check_array, update_dimensions
+from tw_source_finder.read_input_table import  process_input_file
+
+
 use_cv2 = True
 try:
   import cv2 as cv

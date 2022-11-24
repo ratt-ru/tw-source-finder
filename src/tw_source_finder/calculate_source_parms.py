@@ -1,23 +1,7 @@
-#!/usr/bin/env python
-
-# This program calculates equipartition and other parameters for 
-# radio sources. 
-
-from datetime import datetime, timedelta
-from astropy import wcs
-from astropy.wcs import WCS
-from astropy.time import Time
-from coords import *
-import astropy.visualization as vis
-from astropy.io import fits
-from shapely.geometry import Polygon, MultiPolygon, Point
-from beam_to_pixels import calculate_area
-from process_polygon_data import *
-from check_array import check_array
-from breizorro_extract import make_noise_map
-from skimage.draw import polygon as skimage_polygon
-import generate_mask_polygons as gen_p
-import generate_manual_polygon as gen_m
+"""
+This program calculates equipartition and
+other parameters for radio sources
+"""
 
 import os.path
 import numpy as np
@@ -25,8 +9,24 @@ import math
 import sys
 import json
 import time
+import astropy.visualization as vis
 
-from equipartition import *
+from astropy import wcs
+from astropy.wcs import WCS
+from astropy.time import Time
+from datetime import datetime, timedelta
+from astropy.io import fits
+from shapely.geometry import Polygon, MultiPolygon, Point
+from skimage.draw import polygon as skimage_polygon
+
+import tw_source_finder.generate_mask_polygons as gen_p
+import tw_source_finder.generate_manual_polygon as gen_m
+from tw_source_finder.coords import *
+from tw_source_finder.equipartition import *
+from tw_source_finder.beam_to_pixels import calculate_area
+from tw_source_finder.process_polygon_data import *
+from tw_source_finder.check_array import check_array
+from tw_source_finder.breizorro_extract import make_noise_map
 
 
 def process_simple_polygon_file(points):

@@ -1,14 +1,14 @@
-#!/usr/bin/env python
+"""
+FWHM = 2.355 σ = 2* sqrt(2*ln(2))
+see https://en.wikipedia.org/wiki/Full_width_at_half_maximum   and
+https://www.eaobservatory.org/jcmt/faq/how-can-i-convert-from-mjybeam-to-mjy/
+or https://www.eaobservatory.org/jcmt/?s=beam+to+pixels
+for a description of what's going on
 
-# FWHM = 2.355 σ = 2* sqrt(2*ln(2))
-# see https://en.wikipedia.org/wiki/Full_width_at_half_maximum   and
-# https://www.eaobservatory.org/jcmt/faq/how-can-i-convert-from-mjybeam-to-mjy/
-# or https://www.eaobservatory.org/jcmt/?s=beam+to+pixels
-# for a description of what's going on
-
-# This script derives the beam area response in pixels required to normalize the
-# summed signal from an image area in pixels i.e. you divide the summed
-# signal by the beam area
+This script derives the beam area response in pixels required to normalize the
+summed signal from an image area in pixels i.e. you divide the summed
+signal by the beam area
+"""
 
 import numpy as np
 import math

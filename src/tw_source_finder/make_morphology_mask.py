@@ -1,23 +1,24 @@
-#!/usr/bin/env python
-
 # see https://en.wikipedia.org/wiki/Mathematical_morphology
 
+import math
+import os
 import sys
-import numpy as np
 import subprocess
+import numpy as np
+
 from astropy.io import fits
 from check_array import check_array, update_dimensions
 from astropy.io import fits
 from astropy.wcs import WCS
-from breizorro_extract import make_noise_map
-from generate_morphology_image import make_morphology_image
-from larrys_script import generate_morphology_images
-from combine_images import combine_images
-from beam_to_pixels import calculate_area
-from process_polygon_data import *
-import generate_mask_polygons as gen_p
-import math
-import os
+
+import tw_source_finder.generate_mask_polygons as gen_p
+
+from tw_source_finder.breizorro_extract import make_noise_map
+from tw_source_finder.generate_morphology_image import make_morphology_image
+from tw_source_finder.larrys_script import generate_morphology_images
+from tw_source_finder.combine_images import combine_images
+from tw_source_finder.beam_to_pixels import calculate_area
+from tw_source_finder.process_polygon_data import *
 
 def make_mask(argv):
     """
@@ -246,6 +247,3 @@ def main( argv ):
 
 if __name__ == '__main__':
     main(sys.argv)
-
-
-

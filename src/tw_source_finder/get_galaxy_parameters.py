@@ -1,7 +1,8 @@
-#!/usr/bin/env python
+"""
+script to generate galaxy polygons and then
+pass polygons to calaculate galaxy parameters
+"""
 
-# script to generate galaxy polygons and then pass polygons
-# to calaculate galaxy parameters
 import os
 import os.path
 import sys
@@ -9,11 +10,13 @@ import numpy as np
 import math 
 import timeit
 import subprocess
+
 from astropy.io import fits
 from astropy.coordinates import SkyCoord
-from read_input_table import  process_input_file
-from calculate_source_parms import analyze_image
 from optparse import OptionParser
+
+from tw_source_finder.read_input_table import process_input_file
+from tw_source_finder.calculate_source_parms import analyze_image
 
 
 def process_images(filename, use_b_mask, use_conv, do_subt, threshold_value,noise):

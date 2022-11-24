@@ -1,19 +1,22 @@
-#!/usr/bin/env python
-
-# This script performs morphological erosion and / or dilation on
-# an imput image
-# see https://en.wikipedia.org/wiki/Mathematical_morphology
+"""
+This script performs morphological erosion and / or dilation on
+an imput image
+see https://en.wikipedia.org/wiki/Mathematical_morphology
+"""
 
 import sys
+
 import numpy as np
 import astropy.visualization as vis
 import scipy.special
+
 from astropy.io import fits
 from skimage.morphology import erosion, dilation, opening, white_tophat
 from skimage.morphology import disk, rectangle
-from check_array import check_array
 from astropy.io import fits
 from astropy.wcs import WCS
+
+from tw_source_finder.check_array import check_array
 
 
 def create_circular_mask(h, w, center=None, radius=None):

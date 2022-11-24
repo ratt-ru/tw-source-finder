@@ -1,25 +1,25 @@
-#!/usr/bin/env python3
+"""
+This script will download astronomical images in FITS format
+from the Alasky server. Potential HIPS data sets can be found 
+at https://aladin.u-strasbg.fr/hips/list
+One annoyance is that if the specified data/image cannot be retrieved
+it will still return a FITS file but with nothing useful in it.
 
-# This script will download astronomical images in FITS format
-# from the Alasky server. Potential HIPS data sets can be found 
-# at https://aladin.u-strasbg.fr/hips/list
-# One annoyance is that if the specified data/image cannot be retrieved
-# it will still return a FITS file but with nothing useful in it.
-
-# In theory one should be able to retrieve a file by giving a full
-# URL to the astropy file name, but that does not seem to allow
-# specification of timeouts and I find PyCurl more reliable.
+In theory one should be able to retrieve a file by giving a full
+URL to the astropy file name, but that does not seem to allow
+specification of timeouts and I find PyCurl more reliable.
+"""
 
 import os
 import sys
 import numpy
 import math
 
-#from astroquery.simbad import Simbad
+import pycurl
+
 from astropy.io import fits
 from astropy.coordinates import SkyCoord
 from urllib.parse import quote
-import pycurl
 
 
 def  download_image_save_cutout(field_name, ra , dec, fov, pixel_size, use_racs):
