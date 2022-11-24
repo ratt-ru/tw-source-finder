@@ -267,7 +267,7 @@ def generate_source_list(filename, threshold_value, noise):
  # we are done
     return
 
-def main( argv ):
+def main():
    parser = OptionParser(usage = '%prog [options] ')
    parser.add_option('-f', '--file', dest = 'filename', help = 'FITS file with radio image  (default = None)', default = None)
    parser.add_option('-t', '--threshold', dest = 'threshold', help = 'Threshold value for source detection in units of noise (default = 6)', default = 6)
@@ -288,5 +288,3 @@ def main( argv ):
 #
 # example: run as 'get_simple_source_list.py -f xyz.fits -t 6.5'
 #
-if __name__ == "__main__":
-  main(sys.argv)
