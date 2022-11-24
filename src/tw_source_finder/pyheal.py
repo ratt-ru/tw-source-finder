@@ -3,10 +3,11 @@
 #
 # this script is a pure python implementation of the Fast Marching
 # Method inpainting algorithm, but unlike the OpenCV method, does not seem
-# to occasionally fill in with Speckles. 
+# to occasionally fill in with Speckles.
 
+import heapq  # see https://docs.python.org/3/library/heapq.html
 from math import sqrt as sqrt
-import heapq      # see https://docs.python.org/3/library/heapq.html
+
 import numpy as np
 
 # flags
@@ -14,7 +15,7 @@ KNOWN = 0
 BAND = 1
 UNKNOWN = 2
 # extremity values
-INF = 1e6 # dont use np.inf to avoid inf * 0
+INF = 1e6  # dont use np.inf to avoid inf * 0
 EPS = 1e-6
 
 # solves a step of the eikonal equation in order to find closest quadrant
@@ -58,6 +59,7 @@ def _solve_eikonal(y1, x1, y2, x2, height, width, dists, flags):
     # no pixel is known
     return INF
 
+
 # returns gradient for one pixel, computed on 2 pixel range if possible
 def _pixel_gradient(y, x, height, width, vals, flags):
     val = vals[y, x]
@@ -100,6 +102,7 @@ def _pixel_gradient(y, x, height, width, vals, flags):
 
     return grad_y, grad_x
 
+
 # compute distances between initial mask contour and pixels outside mask, using FMM (Fast Marching Method)
 def _compute_outside_dists(height, width, dists, flags, band, radius):
     band = band.copy()
@@ -132,12 +135,14 @@ def _compute_outside_dists(height, width, dists, flags, band, radius):
                 continue
 
             # compute neighbor distance to inital mask contour
-            last_dist = min([
-                _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
-                _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
-                _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
-                _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags)
-            ])
+            last_dist = min(
+                [
+                    _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
+                    _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
+                    _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
+                    _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
+                ]
+            )
             dists[nb_y, nb_x] = last_dist
 
             # add neighbor to narrow band
@@ -146,6 +151,7 @@ def _compute_outside_dists(height, width, dists, flags, band, radius):
 
     # distances are opposite to actual FFM propagation direction, fix it
     dists *= -1.0
+
 
 # computes pixels distances to initial mask contour, flags, and narrow band queue
 def _init(height, width, mask, radius):
@@ -175,13 +181,13 @@ def _init(height, width, mask, radius):
                 dists[nb_y, nb_x] = 0.0
                 heapq.heappush(band, (0.0, nb_y, nb_x))
 
-
     # compute distance to inital mask contour for KNOWN pixels
     # (by inverting mask/flags and running FFM)
     _compute_outside_dists(height, width, dists, flags, band, radius)
 
-    print('_init completed')
+    print("_init completed")
     return dists, flags, band
+
 
 # returns RGB values for pixel to by inpainted, computed for its neighborhood
 def _inpaint_pixel(y, x, img, height, width, dists, flags, radius):
@@ -209,7 +215,7 @@ def _inpaint_pixel(y, x, img, height, width, dists, flags, radius):
             # vector from point to neighbor
             dir_y = y - nb_y
             dir_x = x - nb_x
-            dir_length_square = dir_y ** 2 + dir_x ** 2
+            dir_length_square = dir_y**2 + dir_x**2
             dir_length = sqrt(dir_length_square)
             # pixel out of neighborhood
             if dir_length > radius:
@@ -234,6 +240,7 @@ def _inpaint_pixel(y, x, img, height, width, dists, flags, radius):
 
             weight_sum += weight
     return pixel_sum / weight_sum
+
 
 # main inpainting function
 def inpaint(img, mask, radius=5):
@@ -264,12 +271,14 @@ def inpaint(img, mask, radius=5):
                 continue
 
             # compute neighbor distance to inital mask contour
-            nb_dist = min([
-                _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
-                _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
-                _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
-                _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags)
-            ])
+            nb_dist = min(
+                [
+                    _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
+                    _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
+                    _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
+                    _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
+                ]
+            )
             dists[nb_y, nb_x] = nb_dist
 
             # inpaint neighbor

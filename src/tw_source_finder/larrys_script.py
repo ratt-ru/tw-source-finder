@@ -14,66 +14,69 @@ for small scale features,  filtered = original_map - open
 """
 
 import sys
-import numpy as np
 
+import numpy as np
 from astropy.io import fits
-from scipy.ndimage.filters import minimum_filter as minf2D
 from scipy.ndimage.filters import maximum_filter as maxf2D
-from skimage.morphology import erosion, dilation
-from skimage.morphology import rectangle
+from scipy.ndimage.filters import minimum_filter as minf2D
+from skimage.morphology import dilation, erosion, rectangle
 
 
 # copied from breizorro
 def check_array(data):
-  if len(data.shape) == 2:
+    if len(data.shape) == 2:
         data = np.array(data[:, :])
-  elif len(data.shape) == 3:
+    elif len(data.shape) == 3:
         data = np.array(data[0, :, :])
-  else:
+    else:
         data = np.array(data[0, 0, :, :])
-  return data
+    return data
+
 
 def generate_morphology_images(argv):
-  file=sys.argv[1]
-  file = file + '.fits'
-  X=int(sys.argv[2])
-  Y=int(sys.argv[3])
+    file = sys.argv[1]
+    file = file + ".fits"
+    X = int(sys.argv[2])
+    Y = int(sys.argv[3])
 
-  hdu_list = fits.open(file) # Note: fits.getdata causes security problems
-                           # as it can get remote data
-  hdu = hdu_list[0]
-  data = check_array(hdu.data)
+    hdu_list = fits.open(file)  # Note: fits.getdata causes security problems
+    # as it can get remote data
+    hdu = hdu_list[0]
+    data = check_array(hdu.data)
 
-# do morphology imaging
-  structure_element = rectangle(X, Y)
-  eroded = erosion(data, structure_element)
-  eroded = erosion(eroded, structure_element)
-  dilated = dilation(eroded, structure_element)
-  openmp = dilated
-  newmp = data - dilated
+    # do morphology imaging
+    structure_element = rectangle(X, Y)
+    eroded = erosion(data, structure_element)
+    eroded = erosion(eroded, structure_element)
+    dilated = dilation(eroded, structure_element)
+    openmp = dilated
+    newmp = data - dilated
 
-# write out results
-# Note: fits.writeto('min.fits',mins,clobber=True) writes out the
-# absolute minimum fits file with just about zero header information
+    # write out results
+    # Note: fits.writeto('min.fits',mins,clobber=True) writes out the
+    # absolute minimum fits file with just about zero header information
 
-  location =  file.find('.fits')
-  hdu.data = openmp
-  hdu.header['DATAMAX'] =  hdu.data.max()
-  hdu.header['DATAMIN'] =  hdu.data.min()
-  outfile = file[:location] + '_opn.fits'
-  hdu.writeto(outfile,overwrite=True) # diffuse emission - correct 0 level as needed
+    location = file.find(".fits")
+    hdu.data = openmp
+    hdu.header["DATAMAX"] = hdu.data.max()
+    hdu.header["DATAMIN"] = hdu.data.min()
+    outfile = file[:location] + "_opn.fits"
+    hdu.writeto(outfile, overwrite=True)  # diffuse emission - correct 0 level as needed
 
-  hdu.data = newmp
-  hdu.header['DATAMAX'] =  hdu.data.max()
-  hdu.header['DATAMIN'] =  hdu.data.min()
-  outfile = file[:location] + '_filt.fits'
-  hdu.writeto(outfile,overwrite=True) # fine-scale emission - apply -1*(open zero level)
+    hdu.data = newmp
+    hdu.header["DATAMAX"] = hdu.data.max()
+    hdu.header["DATAMIN"] = hdu.data.min()
+    outfile = file[:location] + "_filt.fits"
+    hdu.writeto(outfile, overwrite=True)  # fine-scale emission - apply -1*(open zero level)
+
 
 # end
 
-def main( argv ):
+
+def main(argv):
     generate_morphology_images(argv)
 
+
 # example of command:  'larrys_script.py AbellS1063 7 11'
-if __name__ == '__main__':
+if __name__ == "__main__":
     main(sys.argv)
