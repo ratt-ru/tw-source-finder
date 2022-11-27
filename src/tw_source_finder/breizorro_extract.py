@@ -1,8 +1,9 @@
-import scipy.special
-import scipy.ndimage
 import numpy as np
+import scipy.ndimage
+import scipy.special
 
 # extracted from breizorro (https://github.com/ratt-ru/breizorro)
+
 
 def make_noise_map(input_image_array, boxsize=50):
     # Cyril's magic minimum filter
@@ -12,7 +13,7 @@ def make_noise_map(input_image_array, boxsize=50):
     n = boxsize**2.0
     x = np.linspace(-10, 10, 1000)
     f = 0.5 * (1.0 + scipy.special.erf(x / np.sqrt(2.0)))
-    F = 1.0 - (1.0 - f)**n
+    F = 1.0 - (1.0 - f) ** n
     ratio = np.abs(np.interp(0.5, F, x))
     noise = -scipy.ndimage.filters.minimum_filter(input_image_array, box) / ratio
     negative_mask = noise < 0.0
