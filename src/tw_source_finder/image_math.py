@@ -59,7 +59,13 @@ def main(argv):
         default=None,
     )
     a = "a"
-    parser.add_option("-m", "--use_m", dest="use_math", help="use math (default = a)", default=a)
+    parser.add_option(
+        "-m",
+        "--use_m",
+        dest="use_math",
+        help="use math (default = a)",
+        default=a,
+    )
     (options, args) = parser.parse_args()
     print("options", options)
     filename = options.filename

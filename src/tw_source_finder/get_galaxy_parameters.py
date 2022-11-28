@@ -19,16 +19,25 @@ from tw_source_finder.calculate_source_parms import analyze_image
 from tw_source_finder.read_input_table import process_input_file
 
 
-def process_images(filename, use_b_mask, use_conv, do_subt, threshold_value, noise):
+def process_images(
+    filename, use_b_mask, use_conv, do_subt, threshold_value, noise
+):
     print("processing file ", filename)
     print("use_b_mask", use_b_mask)
     print("use_conv", use_conv)
     print("do_subt", do_subt)
     print("threshold value", threshold_value)
     print("default noise (Jy)", noise)
-    freq, names, ra_deg, dec_deg, las, las_raw, red_shift, spec_index = process_input_file(
-        filename
-    )
+    (
+        freq,
+        names,
+        ra_deg,
+        dec_deg,
+        las,
+        las_raw,
+        red_shift,
+        spec_index,
+    ) = process_input_file(filename)
     # for testing
     perform_test = False
     if perform_test:
@@ -102,7 +111,11 @@ def main(argv):
         default=None,
     )
     parser.add_option(
-        "-m", "--use_m", dest="use_mask", help="use mask (default = T)", default=True
+        "-m",
+        "--use_m",
+        dest="use_mask",
+        help="use mask (default = T)",
+        default=True,
     )
     parser.add_option(
         "-c",

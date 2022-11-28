@@ -35,9 +35,18 @@ def download_image_save_cutout(field_name, ra, dec, fov, pixel_size, use_racs):
         hips_list = ["DSS2/red"]
     for hips in hips_list:
         fov = float(fov) / 60.0  # convert from arcmin to deg
-        pixel_increment = float(pixel_size) / 3600  # convert from arcsec to deg
-        width = height = int(fov / pixel_increment)  # number of pixel in each direction
-        print("alasky parameters fov pixel_inc width", fov, pixel_increment, width)
+        pixel_increment = (
+            float(pixel_size) / 3600
+        )  # convert from arcsec to deg
+        width = height = int(
+            fov / pixel_increment
+        )  # number of pixel in each direction
+        print(
+            "alasky parameters fov pixel_inc width",
+            fov,
+            pixel_increment,
+            width,
+        )
         position = SkyCoord(ra, dec, frame="icrs", unit="deg")
         print("retrieving data for file ", field_name)
         url = "http://alasky.u-strasbg.fr/hips-image-services/hips2fits?hips={}&width={}&height={}&fov={}&projection=TAN&coordsys=icrs&ra={}&dec={}".format(
@@ -75,7 +84,9 @@ def main(argv):
     # argv[5] = pixel_size arcsec
     # argv[6] = use_racs
     filename = argv[1]
-    download_image_save_cutout(filename, argv[2], argv[3], argv[4], argv[5], argv[6])
+    download_image_save_cutout(
+        filename, argv[2], argv[3], argv[4], argv[5], argv[6]
+    )
 
 
 if __name__ == "__main__":

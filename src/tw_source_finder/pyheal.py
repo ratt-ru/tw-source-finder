@@ -137,10 +137,46 @@ def _compute_outside_dists(height, width, dists, flags, band, radius):
             # compute neighbor distance to inital mask contour
             last_dist = min(
                 [
-                    _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
-                    _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
-                    _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
-                    _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
+                    _solve_eikonal(
+                        nb_y - 1,
+                        nb_x,
+                        nb_y,
+                        nb_x - 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
+                    _solve_eikonal(
+                        nb_y + 1,
+                        nb_x,
+                        nb_y,
+                        nb_x + 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
+                    _solve_eikonal(
+                        nb_y - 1,
+                        nb_x,
+                        nb_y,
+                        nb_x + 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
+                    _solve_eikonal(
+                        nb_y + 1,
+                        nb_x,
+                        nb_y,
+                        nb_x - 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
                 ]
             )
             dists[nb_y, nb_x] = last_dist
@@ -193,7 +229,9 @@ def _init(height, width, mask, radius):
 def _inpaint_pixel(y, x, img, height, width, dists, flags, radius):
     dist = dists[y, x]
     # normal to pixel, ie direction of propagation of the FFM
-    dist_grad_y, dist_grad_x = _pixel_gradient(y, x, height, width, dists, flags)
+    dist_grad_y, dist_grad_x = _pixel_gradient(
+        y, x, height, width, dists, flags
+    )
     pixel_sum = np.zeros((1,), dtype=float)
     weight_sum = 0.0
 
@@ -273,16 +311,54 @@ def inpaint(img, mask, radius=5):
             # compute neighbor distance to inital mask contour
             nb_dist = min(
                 [
-                    _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
-                    _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
-                    _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
-                    _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
+                    _solve_eikonal(
+                        nb_y - 1,
+                        nb_x,
+                        nb_y,
+                        nb_x - 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
+                    _solve_eikonal(
+                        nb_y + 1,
+                        nb_x,
+                        nb_y,
+                        nb_x + 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
+                    _solve_eikonal(
+                        nb_y - 1,
+                        nb_x,
+                        nb_y,
+                        nb_x + 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
+                    _solve_eikonal(
+                        nb_y + 1,
+                        nb_x,
+                        nb_y,
+                        nb_x - 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
                 ]
             )
             dists[nb_y, nb_x] = nb_dist
 
             # inpaint neighbor
-            pixel_vals = _inpaint_pixel(nb_y, nb_x, img, height, width, dists, flags, radius)
+            pixel_vals = _inpaint_pixel(
+                nb_y, nb_x, img, height, width, dists, flags, radius
+            )
 
             img[nb_y, nb_x] = pixel_vals[0]
 

@@ -47,7 +47,15 @@ def process_simple_polygon_file(points):
 
 
 def analyze_image(
-    filename, freq, z_str, alpha_str, specified_las, use_mask_l, do_subt, threshold_value, noise
+    filename,
+    freq,
+    z_str,
+    alpha_str,
+    specified_las,
+    use_mask_l,
+    do_subt,
+    threshold_value,
+    noise,
 ):
     # note - no '.fits' extension expected ... but
     if filename.find("conv"):
@@ -103,9 +111,14 @@ def analyze_image(
         hdu.data = data
         json_polygons = gen_p.make_polygon(hdu, mask, "F", fits_file)
         if len(json_polygons.out_data["coords"]) > 0:
-            polygon_list, coords, ang_size_all, lobe_las, max_pa, lobe_pa = process_json_file(
-                json_polygons.out_data, pixel_size
-            )
+            (
+                polygon_list,
+                coords,
+                ang_size_all,
+                lobe_las,
+                max_pa,
+                lobe_pa,
+            ) = process_json_file(json_polygons.out_data, pixel_size)
             num_polygons = len(polygon_list)
         else:
             num_polygons = 0
@@ -122,7 +135,10 @@ def analyze_image(
                 computer_las = lobe_las[0]
                 max_pa = lobe_pa[0]
                 print("we have one polygon")
-                print("we have a single polygon with las = ", computer_las - mean_beam)
+                print(
+                    "we have a single polygon with las = ",
+                    computer_las - mean_beam,
+                )
             # interior_points = get_interior_locations(polygon_list)
         else:
             print("No Polygons selected!")
@@ -134,9 +150,14 @@ def analyze_image(
         json_polygons = gen_m.make_manual_polygon(fits_file)
         print("***** manual json polygons", json_polygons.out_data)
         if json_polygons.out_data:
-            polygon_list, coords, ang_size_all, lobe_las, max_pa, lobe_pa = process_json_file(
-                json_polygons.out_data, pixel_size
-            )
+            (
+                polygon_list,
+                coords,
+                ang_size_all,
+                lobe_las,
+                max_pa,
+                lobe_pa,
+            ) = process_json_file(json_polygons.out_data, pixel_size)
             num_polygons = len(polygon_list)
         else:
             num_polygons = 0
@@ -270,14 +291,20 @@ def analyze_image(
                 hypotenuse = float(lobe_las[i - 1]) / pixel_size
                 ellipse_half_size = p.area / (math.pi * 0.5 * hypotenuse)
                 #         print('i hypotenuse , minor ellipse',i, hypotenuse, ellipse_half_size)
-                theta_small = ellipse_half_size * 2 * pixel_size  # twice size times pixel size
+                theta_small = (
+                    ellipse_half_size * 2 * pixel_size
+                )  # twice size times pixel size
                 theta_big = float(lobe_las[i - 1])
                 theta_actual = float(lobe_las[i - 1]) - mean_beam
             #         print('area based theta_big and theta_small', theta_big, theta_small)
             except:
-                theta_big = pixel_size * pixel_size * math.sqrt(p.area / math.pi)
+                theta_big = (
+                    pixel_size * pixel_size * math.sqrt(p.area / math.pi)
+                )
                 theta_small = theta_big
-        new_area = theta_big * theta_small * math.pi / (4.0 * pixel_size * pixel_size)
+        new_area = (
+            theta_big * theta_small * math.pi / (4.0 * pixel_size * pixel_size)
+        )
         #     print('calc_check: theta_big theta_small new area', theta_big,theta_small, new_area)
 
         max_signal = 0.0
@@ -341,7 +368,9 @@ def analyze_image(
             print("nuclear flux", n_flux)
             p_cont = True
             p_subt = False
-            print("i comparison fluxes ", i, flux, n_flux)  # fluxes in units of Jy
+            print(
+                "i comparison fluxes ", i, flux, n_flux
+            )  # fluxes in units of Jy
             if n_flux > 0.0:
                 diff_flux = flux - n_flux
                 if diff_flux > 0.0:
@@ -361,8 +390,24 @@ def analyze_image(
 
             # adjust angular sizes for convolution
             #        print('calling equipartition')
-            B_me, u_me, LAS_dist, LAP, LUM_dist, lum, source_size, volume = equipartition_accurate(
-                freq, theta_big, theta_small, theta_actual, flux, n_flux, z, alpha
+            (
+                B_me,
+                u_me,
+                LAS_dist,
+                LAP,
+                LUM_dist,
+                lum,
+                source_size,
+                volume,
+            ) = equipartition_accurate(
+                freq,
+                theta_big,
+                theta_small,
+                theta_actual,
+                flux,
+                n_flux,
+                z,
+                alpha,
             )
             #        print('magnetic field (gauss)',  B_me)
             #        print('energy_density (erg/cm^3', u_me)
@@ -384,9 +429,17 @@ def analyze_image(
             #       print ('opened and wrote to output ', output)
             output = "source redshift : " + z_str + "\n"
             f.write(output)
-            output = "angular size distance (Mpc) : " + str(round(LAS_dist / 1000.0, 2)) + "\n"
+            output = (
+                "angular size distance (Mpc) : "
+                + str(round(LAS_dist / 1000.0, 2))
+                + "\n"
+            )
             f.write(output)
-            output = "luminosity distance (Mpc) : " + str(round(LUM_dist / 1000.0, 2)) + "\n"
+            output = (
+                "luminosity distance (Mpc) : "
+                + str(round(LUM_dist / 1000.0, 2))
+                + "\n"
+            )
             f.write(output)
             if not point_source:
                 output = (
@@ -395,7 +448,11 @@ def analyze_image(
                     + "\n"
                 )
                 f.write(output)
-                output = "  At position angle (degrees): " + str(round(max_pa, 0)) + "\n"
+                output = (
+                    "  At position angle (degrees): "
+                    + str(round(max_pa, 0))
+                    + "\n"
+                )
                 f.write(output)
             specified_las = float(specified_las)
             output = (
@@ -413,7 +470,9 @@ def analyze_image(
             integrated_flux = round(flux * 1000, 3)
             integrated_flux = str(integrated_flux)
             #       print('**************** object is probably a point_soure')
-            output = "Probably a point source  -  flux densities are similar \n"
+            output = (
+                "Probably a point source  -  flux densities are similar \n"
+            )
             f.write(output)
             output = (
                 "peak flux density = "
@@ -430,7 +489,11 @@ def analyze_image(
             f.write(output)
             continue
 
-        output = "source apparent projected size (kpc) : " + str(round(source_size, 2)) + "\n"
+        output = (
+            "source apparent projected size (kpc) : "
+            + str(round(source_size, 2))
+            + "\n"
+        )
         f.write(output)
         output = (
             "model ellipse major and minor axis sizes (arcsec) : "
@@ -440,7 +503,11 @@ def analyze_image(
             + "\n"
         )
         f.write(output)
-        output = "nominal path length through source (kpc) : " + str(round(LAP, 2)) + "\n"
+        output = (
+            "nominal path length through source (kpc) : "
+            + str(round(LAP, 2))
+            + "\n"
+        )
         f.write(output)
         if i == 0:
             if breizorro_noise:
@@ -459,15 +526,29 @@ def analyze_image(
             else:
                 if round(rms_noise * 1000.0, 3) <= 0.001:
                     output = (
-                        "rms noise (microJy) : " + str(round(rms_noise * 1000000.0, 3)) + " \n"
+                        "rms noise (microJy) : "
+                        + str(round(rms_noise * 1000000.0, 3))
+                        + " \n"
                     )
                 else:
-                    output = "rms noise (mJy) : " + str(round(rms_noise * 1000.0, 3)) + " \n"
+                    output = (
+                        "rms noise (mJy) : "
+                        + str(round(rms_noise * 1000.0, 3))
+                        + " \n"
+                    )
             f.write(output)
         if i == 0:
-            output = "source flux density (mJy) : " + str(round(flux * 1000.0, 2)) + " \n"
+            output = (
+                "source flux density (mJy) : "
+                + str(round(flux * 1000.0, 2))
+                + " \n"
+            )
         else:
-            output = "lobe flux density (mJy) : " + str(round(flux * 1000.0, 2)) + " \n"
+            output = (
+                "lobe flux density (mJy) : "
+                + str(round(flux * 1000.0, 2))
+                + " \n"
+            )
         f.write(output)
         beam_error = num_beams * rms_noise * 1000
         ten_pc_error = 0.1 * flux * 1000
@@ -475,10 +556,16 @@ def analyze_image(
         flux_density_error = math.sqrt(contained_points) * rms_noise * 1000
         if i == 0:
             output = (
-                "source flux density error (mJy) : " + str(round(flux_density_error, 2)) + " \n"
+                "source flux density error (mJy) : "
+                + str(round(flux_density_error, 2))
+                + " \n"
             )
         else:
-            output = "lobe flux density error (mJy) : " + str(round(flux_density_error, 2)) + " \n"
+            output = (
+                "lobe flux density error (mJy) : "
+                + str(round(flux_density_error, 2))
+                + " \n"
+            )
         f.write(output)
         if p_cont:
             #         print('polygon containing nuclear soure ', i)
@@ -497,10 +584,18 @@ def analyze_image(
                     + " mJy not subtracted from total flux density \n"
                 )
             f.write(output)
-        output = "equipartition calculations etc assume a spectral index of " + alpha_str + " \n"
+        output = (
+            "equipartition calculations etc assume a spectral index of "
+            + alpha_str
+            + " \n"
+        )
         f.write(output)
         B_me = B_me * 1.0e6
-        output = "lobe magnetic field (micro gauss) : " + str(round(B_me, 2)) + " \n"
+        output = (
+            "lobe magnetic field (micro gauss) : "
+            + str(round(B_me, 2))
+            + " \n"
+        )
         f.write(output)
         u_me_ergs = u_me
         u_me = round(u_me * 1.0e14, 4)
@@ -513,7 +608,12 @@ def analyze_image(
         )
         f.write(output)
         obs_lum = lum[0] / 1.0e24
-        output = freq_str + " GHz luminosity (/ 1.0e24) (W/Hz): " + str(round(obs_lum, 3)) + " \n"
+        output = (
+            freq_str
+            + " GHz luminosity (/ 1.0e24) (W/Hz): "
+            + str(round(obs_lum, 3))
+            + " \n"
+        )
         f.write(output)
         lum_1_4 = lum[1] / 1.0e24
         output = (
@@ -528,7 +628,11 @@ def analyze_image(
         volume1 = volume / 1.0e72
         output = "lobe volume raw (/ 1.0e72) cm^3 " + str(volume1) + " \n"
         f.write(output)
-        output = "lobe volume rounded (/ 1.0e72) cm cubed : " + str(round(volume1, 3)) + " \n"
+        output = (
+            "lobe volume rounded (/ 1.0e72) cm cubed : "
+            + str(round(volume1, 3))
+            + " \n"
+        )
         f.write(output)
         total_energy = (
             2.0 * u_me_ergs * volume / 1.0e58
@@ -555,7 +659,9 @@ def analyze_image(
         if i == (n - 1):
             if average_B > 0.0 and average_U > 0.0:
                 f.write(" \n")
-                output = "Difference (summed polygons - area weighted average) \n"
+                output = (
+                    "Difference (summed polygons - area weighted average) \n"
+                )
                 f.write(output)
                 average_B = (orig_B - average_B) * 1.0e6
                 output = (
@@ -593,12 +699,22 @@ def main(argv):
     filename = argv[2]  # name of data file
     z = argv[3]  # redshift
     alpha = argv[4]  # spectral index
-    specified_las = argv[5]  # initial angular size estimate for data  retrieval
+    specified_las = argv[
+        5
+    ]  # initial angular size estimate for data  retrieval
     use_mask_l = argv[6]  # use mask or simple polygon
     length = len(argv)
     # print ('length of parameters', length)
     # print('******************')
-    print("**** incoming parameters", freq, filename, z, alpha, specified_las, use_mask_l)
+    print(
+        "**** incoming parameters",
+        freq,
+        filename,
+        z,
+        alpha,
+        specified_las,
+        use_mask_l,
+    )
     analyze_image(filename, freq, z, alpha, specified_las, use_mask_l)
     os.system("date")
     endtime = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())

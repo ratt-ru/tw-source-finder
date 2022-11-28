@@ -33,7 +33,9 @@ def ang_path(z, angle):
     return ang_p, LAS_dist, LUM_dist
 
 
-def equipartition_accurate(freq, theta_1, theta_2, theta_actual, flux, n_flux, z, alpha):
+def equipartition_accurate(
+    freq, theta_1, theta_2, theta_actual, flux, n_flux, z, alpha
+):
     LAP, LAS_dist, LUM_dist = ang_path(z, theta_2)
     print("equipartition fluxes: total, nuclear ", flux, n_flux)
     #  print ('LAP in kpc ', LAP)
@@ -60,10 +62,20 @@ def equipartition_accurate(freq, theta_1, theta_2, theta_actual, flux, n_flux, z
         print("c", c)
         print("d", d)
         B_me_1 = 0.0
-    B_me = 1.0e-4 * math.pow(a, 1.1) * math.pow(freq, 0.22) * math.pow(flux_ratio, (2.0 / 7.0))
+    B_me = (
+        1.0e-4
+        * math.pow(a, 1.1)
+        * math.pow(freq, 0.22)
+        * math.pow(flux_ratio, (2.0 / 7.0))
+    )
 
     #  print('**** mag fields ', B_me, B_me_1 )
-    u_me = 1.9e-9 * math.pow(a, 2.2) * math.pow(freq, 0.44) * math.pow(flux_ratio, (4.0 / 7.0))
+    u_me = (
+        1.9e-9
+        * math.pow(a, 2.2)
+        * math.pow(freq, 0.44)
+        * math.pow(flux_ratio, (4.0 / 7.0))
+    )
     #  print('min energy', u_me)
     u_me1 = (7.0 / 3.0) * (B_me_1 * B_me_1) / (math.pi * 8.0)
     #  print('min energy 1', u_me1)
@@ -73,7 +85,9 @@ def equipartition_accurate(freq, theta_1, theta_2, theta_actual, flux, n_flux, z
     #  print('mag field equiv', B_me_equiv)
 
     # OK - equipartition parameters calculated - now lets get k-corrected radio luminosity at 1.4 GHz
-    S_0_9 = 1.0e-26 * flux  # add in 1e-26 conversion factor to convert Jy to units / m^2
+    S_0_9 = (
+        1.0e-26 * flux
+    )  # add in 1e-26 conversion factor to convert Jy to units / m^2
     S_1_4 = S_0_9 * math.pow(1.4 / freq, alpha)
     # radio K correction = (1+z)^((-1.0*alpha) - 1) so (-1.0*alpha) - 1) -0.2 for alpha = -0.8
     # see https://academic.oup.com/mnras/article/392/2/617/976712
@@ -81,7 +95,9 @@ def equipartition_accurate(freq, theta_1, theta_2, theta_actual, flux, n_flux, z
     e = 1.0 / math.pow(a, 0.2)  # -0.8 + 1
     e = 1.0 / math.pow(a, k_corr)  # -0.8 + 1
     #  print ('k_corr', e)
-    LUM_dist_m = LUM_dist * 1000.0 * 3.085678e16  # convert lum distance from KPc to metres
+    LUM_dist_m = (
+        LUM_dist * 1000.0 * 3.085678e16
+    )  # convert lum distance from KPc to metres
     lum_1_4 = 4.0 * math.pi * math.pow(LUM_dist_m, 2.0) * S_1_4 * e
     lum_0_9 = 4.0 * math.pi * math.pow(LUM_dist_m, 2.0) * S_0_9 * e
     out_str = "calculated " + str(freq) + " GHz luminosity"
@@ -91,5 +107,20 @@ def equipartition_accurate(freq, theta_1, theta_2, theta_actual, flux, n_flux, z
     #  1pc= 3.085678e+18
     #  so 1 kpc = 3.085678e+21 cm
     one_kpc_cubed = math.pow(3.085678e21, 3)
-    volume = math.pi * (4.0 / 3.0) * (theta_1 / theta_2) * math.pow(0.5 * LAP, 3) * one_kpc_cubed
-    return B_me, u_me, LAS_dist, LAP, LUM_dist, (lum_0_9, lum_1_4), source_apparent_size, volume
+    volume = (
+        math.pi
+        * (4.0 / 3.0)
+        * (theta_1 / theta_2)
+        * math.pow(0.5 * LAP, 3)
+        * one_kpc_cubed
+    )
+    return (
+        B_me,
+        u_me,
+        LAS_dist,
+        LAP,
+        LUM_dist,
+        (lum_0_9, lum_1_4),
+        source_apparent_size,
+        volume,
+    )
