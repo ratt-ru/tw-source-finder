@@ -11,7 +11,14 @@ import numpy as np
 import scipy.special
 from astropy.io import fits
 from astropy.wcs import WCS
-from skimage.morphology import dilation, disk, erosion, opening, rectangle, white_tophat
+from skimage.morphology import (
+    dilation,
+    disk,
+    erosion,
+    opening,
+    rectangle,
+    white_tophat,
+)
 
 from tw_source_finder.check_array import check_array
 
@@ -20,7 +27,9 @@ def create_circular_mask(h, w, center=None, radius=None):
 
     if center is None:  # use the middle of the image
         center = (int(w / 2), int(h / 2))
-    if radius is None:  # use the smallest distance between the center and image walls
+    if (
+        radius is None
+    ):  # use the smallest distance between the center and image walls
         radius = min(center[0], center[1], w - center[0], h - center[1])
 
     Y, X = np.ogrid[:h, :w]
@@ -32,7 +41,7 @@ def create_circular_mask(h, w, center=None, radius=None):
 
 def make_morphology_image(filename, filter_size, filter_type, double_erode):
 
-    print("double_erode =", double_erode)
+    print("*** double_erode =", double_erode)
     # Download the image
     # Load the image and the WCS
     file_name = filename + ".fits"
@@ -52,6 +61,7 @@ def make_morphology_image(filename, filter_size, filter_type, double_erode):
         structure_element = disk(size_spec)
     print("structure_element", structure_element)
     if double_erode:
+        print("double erode is ", double_erode)
         if filter_type == "R":
             double_structure_element = rectangle(2 * size_spec, 2 * size_spec)
         else:

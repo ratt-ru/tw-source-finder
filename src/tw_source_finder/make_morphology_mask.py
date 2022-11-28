@@ -26,9 +26,7 @@ def make_mask(argv):
     limiting_sigma: amount by which noise to to be multiplied for mask cutoff
     filter_size: size for structure element = radius of D or size of with for R
     filter_type: D = Disk, R = Rectangle
-
     The process can be described through the following equations:
-
     o = original image
     d - output from erosion-> erosion-> dilation
     t = white TopHat, which should show only compact structures smaller than the
@@ -40,16 +38,13 @@ def make_mask(argv):
         = o - m * t
         = o - (m * o - m * d)
         = o - m * o + (m * d)
-
     we don't know the flux scale of m * d as we don't know the flux scale of the
     dilated image, but it is buried in the output image, so get rid of it
     by subtracting it off, which equates to
-
     o_d  = o - m * o
     and
     o_c = image of compact objects
         = m * o
-
     """
     print("make_mask received argv", argv)
     filename = argv[1]  # fits file name without '.fits' extension
@@ -66,6 +61,16 @@ def make_mask(argv):
     print("make_mask: filter type", filter_type)
     print("make_mask: double_erode ", double_erode)
     print("make_mask: batch_processing", do_batch)
+
+    # concert letters to True or False
+    if do_batch == "T" or do_batch == "t":
+        do_batch = True
+    else:
+        do_batch = False
+    if double_erode == "T" or double_erode == "t":
+        double_erode = True
+    else:
+        double_erode = False
 
     #   print('make_mask: processing original file', filename+'.fits')
     hdu_list = fits.open(filename + ".fits")
@@ -200,12 +205,13 @@ def make_mask(argv):
     # we may want to add some 'compact' features back into the diffuse image ...
     # get locations of the features we want to add to the diffuse image
     # with the polygon selection tool - to obtaim mask m_c
+    print("calling make_polygon with file", filename)
     if not do_batch:
         polygon_gen = gen_p.make_polygon(hdu, mask, "T", filename)  # gives m_c
         polygons = polygon_gen.out_data
         coords = polygons["coords"]
         if len(coords) > 0:
-            print("calling combine_images")
+            print("calling combine_images with filename", filename)
             combine_images(
                 filename, polygons, original_noise=median_noise
             )  # gives a modified image o* = o_d + m_c * o_c
@@ -231,7 +237,6 @@ def main(argv):
     filter_type: argv[4] D = Disk, R = Rectangle
     do_batch = argv[4] do batch processing? T = Yes, F = don't
     double_erode =  argv[5] do double_erode? T = Yes, F = don't
-
     """
     if len(argv) > 4:
         print(" in main", argv)

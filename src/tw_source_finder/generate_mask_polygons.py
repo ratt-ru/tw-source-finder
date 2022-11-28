@@ -62,8 +62,10 @@ class make_polygon:
                 y = np.array(y)
                 #       print('x,y', x,y)
                 ax = plt.gca()
-                ax.lines = plt.plot(x, y)
-                labels = ["lobe {0}".format(i + 1) for i in range(len(self.coords))]
+                ax.plot(x, y)
+                labels = [
+                    "lobe {0}".format(i + 1) for i in range(len(self.coords))
+                ]
                 for i in range(len(self.qannotate)):
                     self.qannotate[i].remove()
                 self.qannotate = []
@@ -76,8 +78,14 @@ class make_polygon:
                             textcoords="offset points",
                             ha="right",
                             va="bottom",
-                            bbox=dict(boxstyle="round,pad=0.5", fc="yellow", alpha=0.5),
-                            arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=0"),
+                            bbox=dict(
+                                boxstyle="round,pad=0.5",
+                                fc="yellow",
+                                alpha=0.5,
+                            ),
+                            arrowprops=dict(
+                                arrowstyle="->", connectionstyle="arc3,rad=0"
+                            ),
                         )
                     )
             #       ax.figure.canvas.draw()
@@ -92,8 +100,12 @@ class make_polygon:
                         textcoords="offset points",
                         ha="right",
                         va="bottom",
-                        bbox=dict(boxstyle="round,pad=0.5", fc="yellow", alpha=0.5),
-                        arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=0"),
+                        bbox=dict(
+                            boxstyle="round,pad=0.5", fc="yellow", alpha=0.5
+                        ),
+                        arrowprops=dict(
+                            arrowstyle="->", connectionstyle="arc3,rad=0"
+                        ),
                     )
                 )
             ax.figure.canvas.draw()
@@ -105,16 +117,16 @@ class make_polygon:
             ax = plt.gca()
             for i in range(len(self.qannotate)):
                 self.qannotate[i].remove()
+            for line in ax.get_lines():  # ax.lines:
+                line.remove()
             #     print('resetting coords to zero')
             self.qannotate = []
             self.coords = []
-            ax.lines = []
+            axlines = []
             ax.figure.canvas.draw()
         return
 
     def compare_fields(self):
-        # print('compare_fields: mask file', mask)
-        # print('compare_fields: radio file', radio)
         # print ('info',hdu_list.info())
         cen_x = self.hdu.header["CRPIX1"]
         cen_y = self.hdu.header["CRPIX2"]
@@ -129,29 +141,42 @@ class make_polygon:
         # print('wcs', wcs)
 
         # print('starting plot')
-        fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(8, 4), sharex=True, sharey=True)
+        fig, (ax1, ax2) = plt.subplots(
+            ncols=2, figsize=(8, 4), sharex=True, sharey=True
+        )
         end_point = self.file_name.find(".fits")
         if self.morph_sign == "T":
             if end_point > -1:
                 self.image_title = (
-                    self.file_name[:end_point] + " Comparison of Diffuse and Compact Structures"
+                    self.file_name[:end_point]
+                    + " Comparison of Diffuse and Compact Structures"
                 )
             else:
-                self.image_title = self.file_name + " Comparison of Diffuse and Compact Structures"
+                self.image_title = (
+                    self.file_name
+                    + " Comparison of Diffuse and Compact Structures"
+                )
         else:
             if end_point > -1:
                 self.image_title = (
-                    self.file_name[:end_point] + " Polygons for Flux Density Analysis"
+                    self.file_name[:end_point]
+                    + " Polygons for Flux Density Analysis"
                 )
             else:
-                self.image_title = self.file_name + " Polygons for Flux Density Analysis"
+                self.image_title = (
+                    self.file_name + " Polygons for Flux Density Analysis"
+                )
         plt.suptitle(self.image_title)
         interval = vis.PercentileInterval(99.9)
         vmin, vmax = interval.get_limits(self.hdu.data)
         # print('original intensities', vmin,vmax)
         vmin = 0.0
-        norm = vis.ImageNormalize(vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000))
-        im = ax1.imshow(self.hdu.data, cmap=plt.cm.gray_r, norm=norm, origin="lower")
+        norm = vis.ImageNormalize(
+            vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000)
+        )
+        im = ax1.imshow(
+            self.hdu.data, cmap=plt.cm.gray_r, norm=norm, origin="lower"
+        )
         # im = ax1.imshow(astropy_conv_kernel, cmap =plt.cm.gray_r, norm = norm, origin = 'lower')
 
         ax1.imshow(image, cmap=plt.cm.gray, norm=norm, origin="lower")
@@ -166,7 +191,9 @@ class make_polygon:
         interval = vis.PercentileInterval(99.9)
         vmin, vmax = interval.get_limits(self.mask)
         # print('adjusted radio intensities', vmin,vmax)
-        norm = vis.ImageNormalize(vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000))
+        norm = vis.ImageNormalize(
+            vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000)
+        )
         ax2.imshow(self.mask, cmap=plt.cm.gray_r, norm=norm, origin="lower")
         # ax2.imshow(hdu2.data, cmap =plt.cm.gray, norm = norm, origin = 'lower')
         ax2.scatter(cen_x - 1, cen_y - 1, s=40, marker="+")
@@ -213,7 +240,9 @@ class make_polygon:
         if length > 0:
             arr2d = np.array(outer_list)
             columnIndex = 1
-            sortedArr = arr2d[arr2d[:, columnIndex].argsort()[::-1]]  # sorts in ascending order
+            sortedArr = arr2d[
+                arr2d[:, columnIndex].argsort()[::-1]
+            ]  # sorts in ascending order
             #   print('sorted arr2d', sortedArr)
 
             #   find n largest values for plotting
