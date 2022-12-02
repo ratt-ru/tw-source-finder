@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Calculate useful values for a given cosmology.  This module uses code adapted
 from `CC.py`_ (`James Schombert`_) which is a Python version of the
@@ -37,21 +36,24 @@ The following values are calculated:
 import math
 
 # Define a few constants
-cm_per_pc = 3.0856775813057289536e+18 
-c = 299792.458                         # velocity of light in km/sec
-km_per_ly = 3600*24*365.25*c           # km per light-year
-Tyr = 977.8                            # coefficent for converting 1/H into Gyr
+cm_per_pc = 3.0856775813057289536e18
+c = 299792.458  # velocity of light in km/sec
+km_per_ly = 3600 * 24 * 365.25 * c  # km per light-year
+Tyr = 977.8  # coefficent for converting 1/H into Gyr
 arcsec_per_rad = 206264.806
-_outvals_str = ('z H0 WM WV WK WR',
-                'DA DA_Gyr DA_Mpc DA_cm',
-                'DL DL_Gyr DL_Mpc DL_cm',
-                'DCMR DCMR_Gyr DCMR_Mpc DCMR_cm',
-                'PS_kpc PS_cm',
-                'DTT DTT_Gyr',
-                'VCM VCM_Gpc3',
-                'age age_Gyr',
-                'zage zage_Gyr',)
-_outvals = (' '.join(_outvals_str)).split()
+_outvals_str = (
+    "z H0 WM WV WK WR",
+    "DA DA_Gyr DA_Mpc DA_cm",
+    "DL DL_Gyr DL_Mpc DL_cm",
+    "DCMR DCMR_Gyr DCMR_Mpc DCMR_cm",
+    "PS_kpc PS_cm",
+    "DTT DTT_Gyr",
+    "VCM VCM_Gpc3",
+    "age age_Gyr",
+    "zage zage_Gyr",
+)
+_outvals = (" ".join(_outvals_str)).split()
+
 
 def cosmocalc(z, H0=71, WM=0.27, WV=None):
     """
@@ -110,50 +112,52 @@ def cosmocalc(z, H0=71, WM=0.27, WV=None):
     """
 
     if z > 100:
-        z = z / 299792.458    # Values over 100 are in km/s
+        z = z / 299792.458  # Values over 100 are in km/s
 
     if WV is None:
-        WV = 1.0 - WM - 0.4165/(H0*H0)  # Omega(vacuum) or lambda
-    age = 0.0      # age of Universe in units of 1/H0
-    
-    h = H0 / 100.
-    WR = 4.165E-5 / (h*h)   # includes 3 massless neutrino species, T0 = 2.72528
+        WV = 1.0 - WM - 0.4165 / (H0 * H0)  # Omega(vacuum) or lambda
+    age = 0.0  # age of Universe in units of 1/H0
+
+    h = H0 / 100.0
+    WR = 4.165e-5 / (
+        h * h
+    )  # includes 3 massless neutrino species, T0 = 2.72528
     WK = 1 - WM - WR - WV
-    az = 1.0 / (1 + 1.0*z)
-    n=1000         # number of points in integrals
+    az = 1.0 / (1 + 1.0 * z)
+    n = 1000  # number of points in integrals
     for i in range(n):
         a = az * (i + 0.5) / n
-        adot = math.sqrt(WK + (WM/a) + (WR/(a*a)) + (WV*a*a))
-        age = age + 1./adot
-    
+        adot = math.sqrt(WK + (WM / a) + (WR / (a * a)) + (WV * a * a))
+        age = age + 1.0 / adot
+
     zage = az * age / n
     DTT = 0.0
     DCMR = 0.0
-    
+
     # do integral over a=1/(1+z) from az to 1 in n steps, midpoint rule
     for i in range(n):
-        a = az + (1-az) * (i+0.5) / n
-        adot = math.sqrt(WK + (WM/a) + (WR/(a*a)) + (WV*a*a))
-        DTT = DTT + 1./adot
-        DCMR = DCMR + 1./(a*adot)
-    
-    DTT = (1.-az) * DTT / n
-    DCMR = (1.-az) * DCMR / n
+        a = az + (1 - az) * (i + 0.5) / n
+        adot = math.sqrt(WK + (WM / a) + (WR / (a * a)) + (WV * a * a))
+        DTT = DTT + 1.0 / adot
+        DCMR = DCMR + 1.0 / (a * adot)
+
+    DTT = (1.0 - az) * DTT / n
+    DCMR = (1.0 - az) * DCMR / n
     age = DTT + zage
-    
+
     # tangential comoving distance
     ratio = 1.0
     x = math.sqrt(abs(WK)) * DCMR
     if x > 0.1:
         if WK > 0:
-            ratio =  0.5 * (math.exp(x) - math.exp(-x)) / x 
+            ratio = 0.5 * (math.exp(x) - math.exp(-x)) / x
         else:
             ratio = math.math.sin(x) / x
     else:
         y = x * x
         if WK < 0:
             y = -y
-        ratio = 1. + y/6. + y*y/120.
+        ratio = 1.0 + y / 6.0 + y * y / 120.0
     DCMT = ratio * DCMR
 
     # comoving volume computation
@@ -161,24 +165,25 @@ def cosmocalc(z, H0=71, WM=0.27, WV=None):
     x = math.sqrt(abs(WK)) * DCMR
     if x > 0.1:
         if WK > 0:
-            ratio = (0.125 * (math.exp(2.*x) - math.exp(-2.*x)) - x/2.) / (x**3 / 3.)
+            ratio = (0.125 * (math.exp(2.0 * x) - math.exp(-2.0 * x)) - x / 2.0) / (x**3 / 3.0)
         else:
-            ratio = (x/2. - math.sin(2.*x)/4.)/(x**3 / 3.)
+            ratio = (x / 2.0 - math.sin(2.0 * x) / 4.0) / (x**3 / 3.0)
     else:
         y = x * x
-        if WK < 0: y = -y
-        ratio = 1. + y/5. + (2./105.)*y*y
-    VCM = ratio * DCMR**3 / 3.
-    VCM_Gpc3 = 4. * math.pi * (0.001*c/H0)**3 * VCM
+        if WK < 0:
+            y = -y
+        ratio = 1.0 + y / 5.0 + (2.0 / 105.0) * y * y
+    VCM = ratio * DCMR**3 / 3.0
+    VCM_Gpc3 = 4.0 * math.pi * (0.001 * c / H0) ** 3 * VCM
 
     DA = az * DCMT
-    DL = DA / (az*az)
+    DL = DA / (az * az)
 
     # Now convert to some more useful units
     Gyr = lambda x: Tyr / H0 * x
     Mpc = lambda x: c / H0 * x
     cm = lambda x: Mpc(x) * 1e6 * cm_per_pc
-    
+
     DA_Gyr = Gyr(DA)
     DA_Mpc = Mpc(DA)
     DA_cm = cm(DA)
@@ -194,12 +199,13 @@ def cosmocalc(z, H0=71, WM=0.27, WV=None):
     DTT_Gyr = Gyr(DTT)
     age_Gyr = Gyr(age)
     zage_Gyr = Gyr(zage)
-    
+
     PS_kpc = Mpc(DA) * 1000 / arcsec_per_rad
     PS_cm = PS_kpc * cm_per_pc * 1000
 
     localvals = locals()
     return dict((x, localvals[x]) for x in _outvals)
+
 
 def get_options():
     """
@@ -222,37 +228,36 @@ def get_options():
 
     parser = OptionParser(get_options.__doc__)
     parser.set_defaults()
-    parser.add_option("--H0",
-                      default=None,
-                      type='float',
-                      help="Hubble constant")
-    parser.add_option("--WM",
-                      default=None,
-                      type='float',
-                      help="")
-    parser.add_option("--WV",
-                      default=None,
-                      type='float',
-                      help="")
+    parser.add_option(
+        "--H0", default=None, type="float", help="Hubble constant"
+    )
+    parser.add_option("--WM", default=None, type="float", help="")
+    parser.add_option("--WV", default=None, type="float", help="")
     opt, args = parser.parse_args()
     return opt, args, parser
+
 
 def main():
     opt, args, parser = get_options()
 
     if len(args) < 1:
-        parser.error('Need a redshift')
+        parser.error("Need a redshift")
 
-    kwargs = dict((key, val) for (key, val) in opt.__dict__.items() if val is not None)
+    kwargs = dict(
+        (key, val)
+        for (key, val) in list(opt.__dict__.items())
+        if val is not None
+    )
     z = float(args[0])
     cc = cosmocalc(z, **kwargs)
     try:
         outlines = []
-        for outkey in (args[1:] or _outvals):
-            outlines.append(outkey + ' = ' + str(cc[outkey]))
-        print '\n'.join(outlines)
+        for outkey in args[1:] or _outvals:
+            outlines.append(outkey + " = " + str(cc[outkey]))
+        print("\n".join(outlines))
     except KeyError:
-        parser.error(outkey + ' is not a valid output name_unit')
+        parser.error(outkey + " is not a valid output name_unit")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
