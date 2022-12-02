@@ -22,7 +22,7 @@ Check out `YouTube video <https://www.youtube.com/watch?v=cO5TYy396xU>`_ to see 
    :maxdepth: 1
    :caption: README
 
-   README
+   guide/readme
 
 
 Indices and tables
