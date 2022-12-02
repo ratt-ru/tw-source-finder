@@ -8,7 +8,7 @@
 
 import math
 
-from cosmocalc import cosmocalc
+from tw_source_finder.cosmocalc import cosmocalc
 
 Ho = 70  # Hubble Constant
 Omega_w = 0.3
