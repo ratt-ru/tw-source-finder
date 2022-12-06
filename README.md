@@ -1,7 +1,7 @@
 tw-source-finder
 ================
 
-[![Documentation Status](https://readthedocs.org/projects/ratt-ru/tw-source-finder/badge/?version=latest)](https://developer.skao.int/projects/tw-source-finder/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/tw-source-finder/badge/?version=latest)](https://tw-source-finder.readthedocs.io/en/latest/?badge=latest)
 
 This package leverages a parallelization boiler-plate code to provide a super fast source finder routine which deletes background sources using a polygon based approach.
 
