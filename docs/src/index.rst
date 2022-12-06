@@ -12,17 +12,15 @@ detect 165K sources in 130 seconds wall-clock time on a 32GB memory laptop. The
 basic trick is to realize that the actual image is 'read-only' so it can be shared
 between all parallel processes as a global object.
 
-Check out `YouTube video <https://www.youtube.com/watch?v=cO5TYy396xU>`_ to see it in use.
 
 .. README =============================================================
 
-.. This project most likely has it's own README. We include it here.
+.. This project has it's own README. We include it here as user guide
 
 .. toctree::
    :maxdepth: 1
-   :caption: README
 
-   guide/readme
+   User Guide<guide/user_guide>
 
 
 Indices and tables

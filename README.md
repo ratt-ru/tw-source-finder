@@ -49,7 +49,9 @@ We may want to judiciously add selected components of `o_c` to `o_d` to get a fi
 
 $$o* = o_d + m_c * o_c$$
 
-Get_galaxy_parameters integrates the signal contained within specified polygon areas of a radio astronomy image to derive integrated flux densities and other parameters of a radio source.
+**get_galaxy_parameters**
+
+Integrates the signal contained within specified polygon areas of a radio astronomy image to derive integrated flux densities and other parameters of a radio source.
 
 
 Requirements

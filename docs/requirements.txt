@@ -1,0 +1,5 @@
+docutils < 0.17
+Sphinx == 4.1.2
+sphinx-rtd-theme
+sphinx-autodoc-typehints
+typing_extensions
