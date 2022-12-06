@@ -16,6 +16,8 @@ Uses morphological erosion and dilation to remove background sources from a radi
 
 The process can be described through the following equations:
 
+.. TODO find a better way to have the equations under one directive
+
 .. math:: t = o - d
 .. math:: m * t = m * (o - d)
 .. math:: =o - m * t

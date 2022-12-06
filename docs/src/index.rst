@@ -21,6 +21,7 @@ between all parallel processes as a global object.
    :maxdepth: 1
 
    User Guide<guide/user_guide>
+   API<api/index>
 
 
 Indices and tables

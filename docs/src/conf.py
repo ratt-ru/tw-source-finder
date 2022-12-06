@@ -4,15 +4,21 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# -- Path setup --------------------------------------------------------------
+
+# WORKAROUND: https://github.com/sphinx-doc/sphinx/issues/9243
+import sphinx.builders.html
+import sphinx.builders.latex
+import sphinx.builders.texinfo
+import sphinx.builders.text
+import sphinx.ext.autodoc
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+sys.path.insert(0, os.path.abspath("../../src"))
 
 
 # -- Project information -----------------------------------------------------
@@ -39,6 +45,23 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx_autodoc_typehints",
 ]
+
+autodoc_mock_imports = [
+    "numpy",
+    "astropy",
+    "scipy",
+    "shapely",
+    "skimage",
+    "matplotlib",
+    "pycurl",
+    "reproject",
+    "pyheal",
+]
+
+autodoc_default_options = {
+    "members": True,
+    "special-members": "__init__",
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
