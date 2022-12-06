@@ -119,9 +119,7 @@ def cosmocalc(z, H0=71, WM=0.27, WV=None):
     age = 0.0  # age of Universe in units of 1/H0
 
     h = H0 / 100.0
-    WR = 4.165e-5 / (
-        h * h
-    )  # includes 3 massless neutrino species, T0 = 2.72528
+    WR = 4.165e-5 / (h * h)  # includes 3 massless neutrino species, T0 = 2.72528
     WK = 1 - WM - WR - WV
     az = 1.0 / (1 + 1.0 * z)
     n = 1000  # number of points in integrals
@@ -228,9 +226,7 @@ def get_options():
 
     parser = OptionParser(get_options.__doc__)
     parser.set_defaults()
-    parser.add_option(
-        "--H0", default=None, type="float", help="Hubble constant"
-    )
+    parser.add_option("--H0", default=None, type="float", help="Hubble constant")
     parser.add_option("--WM", default=None, type="float", help="")
     parser.add_option("--WV", default=None, type="float", help="")
     opt, args = parser.parse_args()
@@ -243,11 +239,7 @@ def main():
     if len(args) < 1:
         parser.error("Need a redshift")
 
-    kwargs = dict(
-        (key, val)
-        for (key, val) in list(opt.__dict__.items())
-        if val is not None
-    )
+    kwargs = dict((key, val) for (key, val) in list(opt.__dict__.items()) if val is not None)
     z = float(args[0])
     cc = cosmocalc(z, **kwargs)
     try:

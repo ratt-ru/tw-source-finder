@@ -72,12 +72,8 @@ def align_fields(radio, optical, show_plot, out_png):
     interval = vis.PercentileInterval(99.9)
     vmin, vmax = interval.get_limits(hdu1.data)
     print("original optical intensities", vmin, vmax)
-    norm = vis.ImageNormalize(
-        hdu1.data, interval=vis.MinMaxInterval(), stretch=vis.SqrtStretch()
-    )
-    norm = vis.ImageNormalize(
-        vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000)
-    )
+    norm = vis.ImageNormalize(hdu1.data, interval=vis.MinMaxInterval(), stretch=vis.SqrtStretch())
+    norm = vis.ImageNormalize(vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000))
     ax1.imshow(hdu1.data, cmap=plt.cm.gray, norm=norm, origin="lower")
     ax1.contour(temp_data, levels, linewidths=1.0)
     ax1.coords["ra"].set_axislabel("Right Ascension")
@@ -89,9 +85,7 @@ def align_fields(radio, optical, show_plot, out_png):
     vmin, vmax = interval.get_limits(cutout)
     vmin, vmax = interval.get_limits(array)
     print("adjusted radio intensities", vmin, vmax)
-    norm = vis.ImageNormalize(
-        vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000)
-    )
+    norm = vis.ImageNormalize(vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000))
     ax2.imshow(array, cmap=plt.cm.gray, norm=norm, origin="lower")
     ax2.coords["ra"].set_axislabel("Right Ascension")
     ax2.coords["dec"].set_axislabel("Declination")

@@ -84,9 +84,7 @@ def process_json_file(in_data, pixel_size=0.0):
     if length > 0:
         arr2d = np.array(outer_list)
         columnIndex = 1
-        sortedArr = arr2d[
-            arr2d[:, columnIndex].argsort()[::-1]
-        ]  # sorts in ascending order
+        sortedArr = arr2d[arr2d[:, columnIndex].argsort()[::-1]]  # sorts in ascending order
         #   print('sorted arr2d', sortedArr)
 
         #   find n largest values
@@ -193,9 +191,7 @@ def get_interior_locations(polygon_list):
 
         # set up parallelprocessing
         for y in range(int(miny - 1), int(maxy + 1)):
-            TASKS.append(
-                (get_contained_points, (y, int(minx - 1), int(maxx + 1), i, p))
-            )
+            TASKS.append((get_contained_points, (y, int(minx - 1), int(maxx + 1), i, p)))
     NUMBER_OF_PROCESSES = num_processors
     # Create queues
     task_queue = Queue()

@@ -19,9 +19,7 @@ from tw_source_finder.calculate_source_parms import analyze_image
 from tw_source_finder.read_input_table import process_input_file
 
 
-def process_images(
-    filename, use_b_mask, use_conv, do_subt, threshold_value, noise
-):
+def process_images(filename, use_b_mask, use_conv, do_subt, threshold_value, noise):
     print("processing file ", filename)
     print("use_b_mask", use_b_mask)
     print("use_conv", use_conv)

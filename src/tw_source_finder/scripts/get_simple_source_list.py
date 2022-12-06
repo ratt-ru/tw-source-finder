@@ -60,9 +60,7 @@ def Process_contour(x, y):
     if max_signal >= limiting_flux:
         beam_error = contained_points / pixels_beam * noise_out
         ten_pc_error = 0.1 * sum
-        flux_density_error = math.sqrt(
-            ten_pc_error * ten_pc_error + beam_error * beam_error
-        )
+        flux_density_error = math.sqrt(ten_pc_error * ten_pc_error + beam_error * beam_error)
         contour = []
         for i in range(len(x)):
             contour.append([x[i], y[i]])
@@ -84,14 +82,12 @@ def Process_contour(x, y):
             use_max = 1
             #        print('centroid is ', centroid)
             #        print('centroid lies outside polygon - looking for maximum')
-            location = np.unravel_index(
-                np.argmax(data_result, axis=None), data_result.shape
-            )
+            location = np.unravel_index(np.argmax(data_result, axis=None), data_result.shape)
             #        print('location', location)
             x_pos = rr[location]
             y_pos = cc[location]
             data_max = orig_image[x_pos, y_pos]
-            #        print('agw modified x_pos,y_pos, data_max', x_pos, y_pos, data_max)
+            #        print('modified x_pos,y_pos, data_max', x_pos, y_pos, data_max)
             lon, lat = w.all_pix2world(y_pos, x_pos, 0)
 
         # do some formatting
@@ -234,9 +230,7 @@ def generate_source_list(filename, threshold_value, noise):
     output = "# mean beam size (arcsec) " + str(round(mean_beam, 2)) + "\n"
     f.write(output)
     pixels_beam = calculate_area(bmaj, bmin, pixel_size)
-    output = (
-        "# calculated pixels per beam " + str(round(pixels_beam, 2)) + "\n"
-    )
+    output = "# calculated pixels per beam " + str(round(pixels_beam, 2)) + "\n"
     f.write(output)
     if noise == 0.0:
         print("determining noise in image - this may take some time ...")
@@ -317,15 +311,13 @@ def generate_source_list(filename, threshold_value, noise):
     num_detected_sources = len(ra_sorted_list)
     output = "# number of sources detected " + str(num_detected_sources) + "\n"
     f.write(output)
-    output = (
-        "# number of souces using maximum for source position: "
-        + str(num_max)
-        + "\n"
-    )
+    output = "# number of souces using maximum for source position: " + str(num_max) + "\n"
     f.write(output)
     f.write("#\n")
     output = "#  source    ra_hms  dec_dms ra(deg)  dec(deg)    flux(mJy)  error ang_size_(arcsec)  pos_angle_(deg)\n"
-    output = "source,ra_hms,dec_dms,ra(deg),dec(deg),flux(Jy),error,ang_size_(arcsec),pos_angle_(deg)\n"
+    output = (
+        "source,ra_hms,dec_dms,ra(deg),dec(deg),flux(Jy),error,ang_size_(arcsec),pos_angle_(deg)\n"
+    )
     f.write(output)
     for i in range(len(ra_sorted_list)):
         output = str(i) + ", " + ra_sorted_list[i][1] + "\n"

@@ -68,9 +68,7 @@ def paint_image(filename, maskname):
             print("Inpainting using openCV")
             image = 255 * (image - x_min) / (x_max - x_min)
         print("incoming image type", image.dtype)
-        print(
-            "normalized incoming image max and min", image.max(), image.min()
-        )
+        print("normalized incoming image max and min", image.max(), image.min())
         hdu_list_m = fits.open(mask_image)
         hdu1 = hdu_list_m[0]
         mask = check_array(hdu1.data)
@@ -93,13 +91,9 @@ def paint_image(filename, maskname):
             # so there is a bug somewhere.
             #      inpainted = cv.inpaint(image,mask,inpaintRadius=5, flags=cv.INPAINT_TELEA)
 
-            inpainted = cv.inpaint(
-                image, mask, inpaintRadius=5, flags=cv.INPAINT_NS
-            )
+            inpainted = cv.inpaint(image, mask, inpaintRadius=5, flags=cv.INPAINT_NS)
             inpainted = inpainted / 255.0 * (x_max - x_min) + x_min
-            print(
-                "inpainted image max and min", inpainted.max(), inpainted.min()
-            )
+            print("inpainted image max and min", inpainted.max(), inpainted.min())
             hdu.data = update_dimensions(inpainted, incoming_dimensions)
             hdu.header["DATAMIN"] = hdu.data.min()
             hdu.header["DATAMAX"] = hdu.data.max()
@@ -107,9 +101,7 @@ def paint_image(filename, maskname):
                 inpainted_result_file = names[i] + "_CV_NS_inpaint_result.fits"
             else:
                 loc = input_image.find(".fits")
-                inpainted_result_file = (
-                    input_image[:loc] + "_CV_NS_inpaint_result.fits"
-                )
+                inpainted_result_file = input_image[:loc] + "_CV_NS_inpaint_result.fits"
             print("inpainted_result_file ", inpainted_result_file)
             hdu.writeto(inpainted_result_file, overwrite=True)
         else:
@@ -119,19 +111,12 @@ def paint_image(filename, maskname):
             hdu.data = update_dimensions(image, incoming_dimensions)
             hdu.header["DATAMIN"] = hdu.data.min()
             hdu.header["DATAMAX"] = hdu.data.max()
-            print(
-                "inpainted image max and min", hdu.data.max(), hdu.data.min()
-            )
+            print("inpainted image max and min", hdu.data.max(), hdu.data.min())
             if len(names) > 0:
-                inpainted_result_file = (
-                    names[i] + "_pyheal_FMM_inpaint_result.fits"
-                )
+                inpainted_result_file = names[i] + "_pyheal_FMM_inpaint_result.fits"
             else:
                 loc = input_image.find(".fits")
-                (
-                    inpainted_result_input_image[:loc]
-                    + "_pyheal_FMM_inpaint_result.fits"
-                )
+                (inpainted_result_input_image[:loc] + "_pyheal_FMM_inpaint_result.fits")
             hdu.writeto(inpainted_result_file, overwrite=True)
 
         # show the original input image, mask, and output image after
@@ -143,9 +128,7 @@ def paint_image(filename, maskname):
         interval = vis.PercentileInterval(99.9)
         vmin, vmax = interval.get_limits(orig_image)
         vmax = 0.25 * vmax
-        norm = vis.ImageNormalize(
-            vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000)
-        )
+        norm = vis.ImageNormalize(vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000))
 
         ax[0].set_title("Original image")
         ax[0].imshow(orig_image, cmap=plt.cm.gray_r, norm=norm, origin="lower")
@@ -157,18 +140,12 @@ def paint_image(filename, maskname):
         if use_cv2:
             vmin, vmax = interval.get_limits(inpainted)
             vmax = 0.25 * vmax
-            norm = vis.ImageNormalize(
-                vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000)
-            )
-            ax[2].imshow(
-                inpainted, cmap=plt.cm.gray_r, norm=norm, origin="lower"
-            )
+            norm = vis.ImageNormalize(vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000))
+            ax[2].imshow(inpainted, cmap=plt.cm.gray_r, norm=norm, origin="lower")
         else:
             vmin, vmax = interval.get_limits(image)
             vmax = 0.25 * vmax
-            norm = vis.ImageNormalize(
-                vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000)
-            )
+            norm = vis.ImageNormalize(vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000))
             ax[2].imshow(image, cmap=plt.cm.gray_r, norm=norm, origin="lower")
 
         for a in ax:
@@ -184,13 +161,9 @@ def paint_image(filename, maskname):
         else:
             loc = input_image.find(".fits")
             if use_cv2:
-                inpainted_png_file = (
-                    filename[:loc] + "_CV_NS_inpaint_result.png"
-                )
+                inpainted_png_file = filename[:loc] + "_CV_NS_inpaint_result.png"
             else:
-                inpainted_png_file = (
-                    filename[:loc] + "_pyheal_inpaint_result.png"
-                )
+                inpainted_png_file = filename[:loc] + "_pyheal_inpaint_result.png"
         plt.savefig(inpainted_png_file)
 
 

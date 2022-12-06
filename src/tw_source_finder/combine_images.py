@@ -118,9 +118,7 @@ def combine_images(filename, json_polygons, original_noise=0.0):
         hdu = hdu_list[0]
         masked_dilated_data = check_array(hdu.data)
         masked_dilated_data = masked_dilated_data * mask_update
-        masked_dilated_data = update_dimensions(
-            masked_dilated_data, incoming_dimensions
-        )
+        masked_dilated_data = update_dimensions(masked_dilated_data, incoming_dimensions)
         hdu.data = masked_dilated_data
         hdu.header["DATAMIN"] = hdu.data.min()
         hdu.header["DATAMAX"] = hdu.data.max()

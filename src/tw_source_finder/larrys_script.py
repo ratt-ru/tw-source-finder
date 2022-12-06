@@ -61,17 +61,13 @@ def generate_morphology_images(argv):
     hdu.header["DATAMAX"] = hdu.data.max()
     hdu.header["DATAMIN"] = hdu.data.min()
     outfile = file[:location] + "_opn.fits"
-    hdu.writeto(
-        outfile, overwrite=True
-    )  # diffuse emission - correct 0 level as needed
+    hdu.writeto(outfile, overwrite=True)  # diffuse emission - correct 0 level as needed
 
     hdu.data = newmp
     hdu.header["DATAMAX"] = hdu.data.max()
     hdu.header["DATAMIN"] = hdu.data.min()
     outfile = file[:location] + "_filt.fits"
-    hdu.writeto(
-        outfile, overwrite=True
-    )  # fine-scale emission - apply -1*(open zero level)
+    hdu.writeto(outfile, overwrite=True)  # fine-scale emission - apply -1*(open zero level)
 
 
 # end

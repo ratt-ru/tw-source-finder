@@ -27,9 +27,7 @@ from astropy.wcs import WCS
 from tw_source_finder.check_array import check_array, update_dimensions
 
 
-def convolve_image(
-    fits_input_image, conv_factor, use_fft="F", do_downsize="F"
-):
+def convolve_image(fits_input_image, conv_factor, use_fft="F", do_downsize="F"):
     # Load the image to be convolved
     print("loading input_image", fits_input_image)
     hdu_list = fits.open(fits_input_image)
@@ -68,9 +66,7 @@ def convolve_image(
         lon, lat = w.all_pix2world(cen_pos_x, cen_pos_y, 0)
 
     except:
-        print(
-            "Sorry - your input image must contain the FITS kewords BMAJ, BIN, and BPA"
-        )
+        print("Sorry - your input image must contain the FITS kewords BMAJ, BIN, and BPA")
         return
 
     # need to adjust for new beam vs old beam size ratio
@@ -98,9 +94,7 @@ def convolve_image(
     ax1 = plt.subplot(1, 2, 1, projection=WCS(hdu.header).celestial)
     interval = vis.PercentileInterval(99.9)
     vmin, vmax = interval.get_limits(img_source)
-    norm = vis.ImageNormalize(
-        vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000)
-    )
+    norm = vis.ImageNormalize(vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000))
     im = ax1.imshow(img_source, cmap=plt.cm.gray_r, norm=norm, origin="lower")
     ax1.coords["ra"].set_axislabel("Right Ascension")
     ax1.coords["dec"].set_axislabel("Declination")
@@ -110,12 +104,8 @@ def convolve_image(
     ax4 = plt.subplot(1, 2, 2, projection=WCS(hdu.header).celestial)
     interval = vis.PercentileInterval(99.9)
     vmin, vmax = interval.get_limits(astropy_conv)
-    norm = vis.ImageNormalize(
-        vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000)
-    )
-    im = ax4.imshow(
-        astropy_conv, cmap=plt.cm.gray_r, norm=norm, origin="lower"
-    )
+    norm = vis.ImageNormalize(vmin=vmin, vmax=vmax, stretch=vis.LogStretch(1000))
+    im = ax4.imshow(astropy_conv, cmap=plt.cm.gray_r, norm=norm, origin="lower")
     ax4.coords["ra"].set_axislabel("Right Ascension")
     ax4.coords["dec"].set_axislabel("Declination")
     ax4.set_title("Convolved Image")
@@ -137,9 +127,7 @@ def convolve_image(
             outfile = fits_input_image + "_conv.fits"
         if do_downsize == "T":
             print("shrinking convolved image")
-            smaller_astropy_conv = astropy_conv[
-                ::conv_factor_int, ::conv_factor_int
-            ]
+            smaller_astropy_conv = astropy_conv[::conv_factor_int, ::conv_factor_int]
         else:
             smaller_astropy_conv = astropy_conv
     else:
@@ -165,9 +153,7 @@ def convolve_image(
     # no idea why I have to explicity wrap a float inside a float here
     hdu.header["CRVAL1"] = float(lon)
     hdu.header["CRVAL2"] = float(lat)
-    hdu.header.set(
-        "CONVFACT", conv_factor, "factor used to convolve input image"
-    )
+    hdu.header.set("CONVFACT", conv_factor, "factor used to convolve input image")
     today = date.today()
     d4 = today.strftime("%b-%d-%Y")
     hdu.header["HISTORY"] = d4 + " convolved by a factor " + str(conv_factor)
