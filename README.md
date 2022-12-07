@@ -17,10 +17,10 @@ Uses morphological erosion and dilation to remove background sources from a radi
 
 The process can be described through the following equations:
 
-```python
+```
 o = original image
 
-d - output from erosion/dilation
+d = output from erosion/dilation
 
 t = white TopHat, which should show only 'compact' structures
 
@@ -65,11 +65,11 @@ Installation
 Install from source
 
 ```bash
-> pip install .
+$ pip install .
 ```
 
 Use the routine
 
 ```bash
-> tw-source-list -f xyz.fits -t 6.5
+$ tw-source-list -f xyz.fits -t 6.5
 ```
