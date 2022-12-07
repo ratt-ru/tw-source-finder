@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tw-source-finder"
-version = "0.0.1"
+version = "1.0.0"
 license = "MIT license"
 readme = 'README.md'
 description = "super-fast source finder routine using polygon based approach"
