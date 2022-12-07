@@ -58,4 +58,13 @@ def process_input_file(filename, return_morphology_parameters=False):
     if return_morphology_parameters:
         return freq, names, ra_deg, dec_deg
     else:
-        return freq, names, ra_deg, dec_deg, las, las_raw, red_shift, spec_index
+        return (
+            freq,
+            names,
+            ra_deg,
+            dec_deg,
+            las,
+            las_raw,
+            red_shift,
+            spec_index,
+        )

@@ -47,7 +47,15 @@ def process_simple_polygon_file(points):
 
 
 def analyze_image(
-    filename, freq, z_str, alpha_str, specified_las, use_mask_l, do_subt, threshold_value, noise
+    filename,
+    freq,
+    z_str,
+    alpha_str,
+    specified_las,
+    use_mask_l,
+    do_subt,
+    threshold_value,
+    noise,
 ):
     # note - no '.fits' extension expected ... but
     if filename.find("conv"):
@@ -103,9 +111,14 @@ def analyze_image(
         hdu.data = data
         json_polygons = gen_p.make_polygon(hdu, mask, "F", fits_file)
         if len(json_polygons.out_data["coords"]) > 0:
-            polygon_list, coords, ang_size_all, lobe_las, max_pa, lobe_pa = process_json_file(
-                json_polygons.out_data, pixel_size
-            )
+            (
+                polygon_list,
+                coords,
+                ang_size_all,
+                lobe_las,
+                max_pa,
+                lobe_pa,
+            ) = process_json_file(json_polygons.out_data, pixel_size)
             num_polygons = len(polygon_list)
         else:
             num_polygons = 0
@@ -122,7 +135,10 @@ def analyze_image(
                 computer_las = lobe_las[0]
                 max_pa = lobe_pa[0]
                 print("we have one polygon")
-                print("we have a single polygon with las = ", computer_las - mean_beam)
+                print(
+                    "we have a single polygon with las = ",
+                    computer_las - mean_beam,
+                )
             # interior_points = get_interior_locations(polygon_list)
         else:
             print("No Polygons selected!")
@@ -134,9 +150,14 @@ def analyze_image(
         json_polygons = gen_m.make_manual_polygon(fits_file)
         print("***** manual json polygons", json_polygons.out_data)
         if json_polygons.out_data:
-            polygon_list, coords, ang_size_all, lobe_las, max_pa, lobe_pa = process_json_file(
-                json_polygons.out_data, pixel_size
-            )
+            (
+                polygon_list,
+                coords,
+                ang_size_all,
+                lobe_las,
+                max_pa,
+                lobe_pa,
+            ) = process_json_file(json_polygons.out_data, pixel_size)
             num_polygons = len(polygon_list)
         else:
             num_polygons = 0
@@ -361,8 +382,24 @@ def analyze_image(
 
             # adjust angular sizes for convolution
             #        print('calling equipartition')
-            B_me, u_me, LAS_dist, LAP, LUM_dist, lum, source_size, volume = equipartition_accurate(
-                freq, theta_big, theta_small, theta_actual, flux, n_flux, z, alpha
+            (
+                B_me,
+                u_me,
+                LAS_dist,
+                LAP,
+                LUM_dist,
+                lum,
+                source_size,
+                volume,
+            ) = equipartition_accurate(
+                freq,
+                theta_big,
+                theta_small,
+                theta_actual,
+                flux,
+                n_flux,
+                z,
+                alpha,
             )
             #        print('magnetic field (gauss)',  B_me)
             #        print('energy_density (erg/cm^3', u_me)
@@ -598,7 +635,15 @@ def main(argv):
     length = len(argv)
     # print ('length of parameters', length)
     # print('******************')
-    print("**** incoming parameters", freq, filename, z, alpha, specified_las, use_mask_l)
+    print(
+        "**** incoming parameters",
+        freq,
+        filename,
+        z,
+        alpha,
+        specified_las,
+        use_mask_l,
+    )
     analyze_image(filename, freq, z, alpha, specified_las, use_mask_l)
     os.system("date")
     endtime = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())

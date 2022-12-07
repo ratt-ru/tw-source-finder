@@ -15,7 +15,13 @@ from tw_source_finder.read_input_table import process_input_file
 
 
 def process_images(
-    filename, filter_size, filter_type, offset_flux, use_conv, double_erode, do_batch
+    filename,
+    filter_size,
+    filter_type,
+    offset_flux,
+    use_conv,
+    double_erode,
+    do_batch,
 ):
     print("processing file ", filename)
     text = open(filename, "r").readlines()
@@ -83,7 +89,10 @@ def main(argv):
         default=6,
     )
     parser.add_option(
-        "--use_conv", dest="use_conv", help="Select a convolved image (default = F)", default=False
+        "--use_conv",
+        dest="use_conv",
+        help="Select a convolved image (default = F)",
+        default=False,
     )
     parser.add_option(
         "--use_batch",
@@ -115,7 +124,13 @@ def main(argv):
 
     start_time = timeit.default_timer()
     process_images(
-        filename, filter_size, filter_type, offset_flux, use_conv, use_double_erode, use_batch
+        filename,
+        filter_size,
+        filter_type,
+        offset_flux,
+        use_conv,
+        use_double_erode,
+        use_batch,
     )
     elapsed = timeit.default_timer() - start_time
     print("Run Time:", elapsed, "seconds")

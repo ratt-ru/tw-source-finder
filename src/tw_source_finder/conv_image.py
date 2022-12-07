@@ -14,7 +14,12 @@ from datetime import date
 import astropy.visualization as vis
 import matplotlib.pyplot as plt
 import numpy as np
-from astropy.convolution import Gaussian2DKernel, Tophat2DKernel, convolve, convolve_fft
+from astropy.convolution import (
+    Gaussian2DKernel,
+    Tophat2DKernel,
+    convolve,
+    convolve_fft,
+)
 from astropy.io import fits
 from astropy.modeling.models import Gaussian2D
 from astropy.wcs import WCS

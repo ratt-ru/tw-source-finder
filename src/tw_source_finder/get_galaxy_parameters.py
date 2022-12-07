@@ -26,9 +26,16 @@ def process_images(filename, use_b_mask, use_conv, do_subt, threshold_value, noi
     print("do_subt", do_subt)
     print("threshold value", threshold_value)
     print("default noise (Jy)", noise)
-    freq, names, ra_deg, dec_deg, las, las_raw, red_shift, spec_index = process_input_file(
-        filename
-    )
+    (
+        freq,
+        names,
+        ra_deg,
+        dec_deg,
+        las,
+        las_raw,
+        red_shift,
+        spec_index,
+    ) = process_input_file(filename)
     # for testing
     perform_test = False
     if perform_test:
@@ -102,7 +109,11 @@ def main(argv):
         default=None,
     )
     parser.add_option(
-        "-m", "--use_m", dest="use_mask", help="use mask (default = T)", default=True
+        "-m",
+        "--use_m",
+        dest="use_mask",
+        help="use mask (default = T)",
+        default=True,
     )
     parser.add_option(
         "-c",

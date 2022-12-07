@@ -137,10 +137,46 @@ def _compute_outside_dists(height, width, dists, flags, band, radius):
             # compute neighbor distance to inital mask contour
             last_dist = min(
                 [
-                    _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
-                    _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
-                    _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
-                    _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
+                    _solve_eikonal(
+                        nb_y - 1,
+                        nb_x,
+                        nb_y,
+                        nb_x - 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
+                    _solve_eikonal(
+                        nb_y + 1,
+                        nb_x,
+                        nb_y,
+                        nb_x + 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
+                    _solve_eikonal(
+                        nb_y - 1,
+                        nb_x,
+                        nb_y,
+                        nb_x + 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
+                    _solve_eikonal(
+                        nb_y + 1,
+                        nb_x,
+                        nb_y,
+                        nb_x - 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
                 ]
             )
             dists[nb_y, nb_x] = last_dist
@@ -273,10 +309,46 @@ def inpaint(img, mask, radius=5):
             # compute neighbor distance to inital mask contour
             nb_dist = min(
                 [
-                    _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
-                    _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
-                    _solve_eikonal(nb_y - 1, nb_x, nb_y, nb_x + 1, height, width, dists, flags),
-                    _solve_eikonal(nb_y + 1, nb_x, nb_y, nb_x - 1, height, width, dists, flags),
+                    _solve_eikonal(
+                        nb_y - 1,
+                        nb_x,
+                        nb_y,
+                        nb_x - 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
+                    _solve_eikonal(
+                        nb_y + 1,
+                        nb_x,
+                        nb_y,
+                        nb_x + 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
+                    _solve_eikonal(
+                        nb_y - 1,
+                        nb_x,
+                        nb_y,
+                        nb_x + 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
+                    _solve_eikonal(
+                        nb_y + 1,
+                        nb_x,
+                        nb_y,
+                        nb_x - 1,
+                        height,
+                        width,
+                        dists,
+                        flags,
+                    ),
                 ]
             )
             dists[nb_y, nb_x] = nb_dist

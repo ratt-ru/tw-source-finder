@@ -37,7 +37,12 @@ def download_image_save_cutout(field_name, ra, dec, fov, pixel_size, use_racs):
         fov = float(fov) / 60.0  # convert from arcmin to deg
         pixel_increment = float(pixel_size) / 3600  # convert from arcsec to deg
         width = height = int(fov / pixel_increment)  # number of pixel in each direction
-        print("alasky parameters fov pixel_inc width", fov, pixel_increment, width)
+        print(
+            "alasky parameters fov pixel_inc width",
+            fov,
+            pixel_increment,
+            width,
+        )
         position = SkyCoord(ra, dec, frame="icrs", unit="deg")
         print("retrieving data for file ", field_name)
         url = "http://alasky.u-strasbg.fr/hips-image-services/hips2fits?hips={}&width={}&height={}&fov={}&projection=TAN&coordsys=icrs&ra={}&dec={}".format(

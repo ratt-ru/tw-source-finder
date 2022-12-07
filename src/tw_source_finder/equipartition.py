@@ -8,7 +8,7 @@
 
 import math
 
-from cosmocalc import cosmocalc
+from tw_source_finder.cosmocalc import cosmocalc
 
 Ho = 70  # Hubble Constant
 Omega_w = 0.3
@@ -92,4 +92,13 @@ def equipartition_accurate(freq, theta_1, theta_2, theta_actual, flux, n_flux, z
     #  so 1 kpc = 3.085678e+21 cm
     one_kpc_cubed = math.pow(3.085678e21, 3)
     volume = math.pi * (4.0 / 3.0) * (theta_1 / theta_2) * math.pow(0.5 * LAP, 3) * one_kpc_cubed
-    return B_me, u_me, LAS_dist, LAP, LUM_dist, (lum_0_9, lum_1_4), source_apparent_size, volume
+    return (
+        B_me,
+        u_me,
+        LAS_dist,
+        LAP,
+        LUM_dist,
+        (lum_0_9, lum_1_4),
+        source_apparent_size,
+        volume,
+    )

@@ -39,7 +39,8 @@ def align_fields(radio, optical, show_plot, out_png):
     shapes = array.shape
     print("reproject radio array shape ", shapes)
     cutout = array[
-        int(shapes[0] / 4) : int(shapes[0] * 3 / 4), int(shapes[1] / 4) : int(shapes[1] * 3 / 4)
+        int(shapes[0] / 4) : int(shapes[0] * 3 / 4),
+        int(shapes[1] / 4) : int(shapes[1] * 3 / 4),
     ]
     sigma = np.std(cutout)
     temp_data = np.zeros(array.shape, np.float32)
@@ -56,7 +57,8 @@ def align_fields(radio, optical, show_plot, out_png):
         int(shapes[1] * 3 / 4),
     )
     temp_data[
-        int(shapes[0] / 4) : int(shapes[0] * 3 / 4), int(shapes[1] / 4) : int(shapes[1] * 3 / 4)
+        int(shapes[0] / 4) : int(shapes[0] * 3 / 4),
+        int(shapes[1] / 4) : int(shapes[1] * 3 / 4),
     ] = cutout
 
     # The reproject_interp() function above returns the reprojected array as well as an array that provides information on the footprint of the first image in the new reprojected image plane (essentially which pixels in the new image had a corresponding pixel in the old image). We can now visualize the reprojected data and footprint:

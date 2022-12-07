@@ -28,9 +28,16 @@ except:
 def paint_image(filename, maskname):
     print("incoming file name ", filename)
     if filename.find("csv") > -1 and maskname == None:
-        freq, names, ra_deg, dec_deg, las, las_raw, red_shift, spec_index = process_input_file(
-            filename
-        )
+        (
+            freq,
+            names,
+            ra_deg,
+            dec_deg,
+            las,
+            las_raw,
+            red_shift,
+            spec_index,
+        ) = process_input_file(filename)
         num_proc = len(names)
     else:
         num_proc = 1
@@ -109,7 +116,7 @@ def paint_image(filename, maskname):
                 inpainted_result_file = names[i] + "_pyheal_FMM_inpaint_result.fits"
             else:
                 loc = input_image.find(".fits")
-                inpainted_result_input_image[:loc] + "_pyheal_FMM_inpaint_result.fits"
+                (inpainted_result_input_image[:loc] + "_pyheal_FMM_inpaint_result.fits")
             hdu.writeto(inpainted_result_file, overwrite=True)
 
         # show the original input image, mask, and output image after
